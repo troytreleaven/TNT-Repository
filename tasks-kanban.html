@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Kanban - Troy's Command Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.3);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            color: #00d4ff;
+        }
+        
+        .header a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .header a:hover {
+            color: #00d4ff;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-tab {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #888;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab:hover {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+        
+        .nav-tab.active {
+            background: #00d4ff;
+            color: #1a1a2e;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .board-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .board-title h2 {
+            font-size: 1.5rem;
+            color: #00d4ff;
+        }
+        
+        .board-title p {
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        @media (max-width: 1200px) {
+            .kanban-board {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .column {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 500px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .column.todo { border-top: 4px solid #ff1744; }
+        .column.inprogress { border-top: 4px solid #ffab00; }
+        .column.review { border-top: 4px solid #00d4ff; }
+        .column.done { border-top: 4px solid #00c853; }
+        
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .column-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .column-count {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 350px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: grab;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            border-color: rgba(0,212,255,0.3);
+        }
+        
+        .card.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+            transform: rotate(3deg);
+        }
+        
+        .card.drag-over {
+            border: 2px dashed #00d4ff;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            flex: 1;
+            padding-right: 10px;
+        }
+        
+        .card-priority {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .priority-high { background: #ff1744; box-shadow: 0 0 8px #ff1744; }
+        .priority-medium { background: #ffab00; box-shadow: 0 0 8px #ffab00; }
+        .priority-low { background: #00c853; box-shadow: 0 0 8px #00c853; }
+        
+        .card-description {
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .card-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .card-tag {
+            background: rgba(0,212,255,0.2);
+            color: #00d4ff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .card-tag.sales { background: rgba(255,171,0,0.2); color: #ffab00; }
+        .card-tag.niagara { background: rgba(0,200,83,0.2); color: #00c853; }
+        .card-tag.tech { background: rgba(156,39,176,0.2); color: #9c27b0; }
+        .card-tag.marketing { background: rgba(233,30,99,0.2); color: #e91e63; }
+        
+        .card-due {
+            font-size: 0.8rem;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .card-due.urgent { color: #ff1744; }
+        
+        .add-card-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 2px dashed rgba(255,255,255,0.2);
+            color: #888;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .add-card-btn:hover {
+            background: rgba(0,212,255,0.1);
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+        
+        .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255,23,68,0.3);
+            border: none;
+            color: #ff1744;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card:hover .delete-btn {
+            opacity: 1;
+        }
+        
+        .delete-btn:hover {
+            background: rgba(255,23,68,0.6);
+            color: #fff;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        .modal h3 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+        
+        .modal input, .modal textarea, .modal select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        
+        .modal input:focus, .modal textarea:focus, .modal select:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+        
+        .modal textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        .modal-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #00d4ff;
+            color: #1a1a2e;
+        }
+        
+        .btn-primary:hover {
+            background: #00b8e6;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>🎯 Troy's Command Center</h1>
+        </div>
+        <div class="nav-tabs">
+            <a href="index.html" class="nav-tab">📊 Dashboard</a>
+            <a href="tasks-kanban.html" class="nav-tab active">✅ Tasks</a>
+            <a href="pipeline-kanban.html" class="nav-tab">💰 Pipeline</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="board-title">
+            <h2>📋 Task Kanban</h2>
+            <p>Drag and drop tasks to organize your workflow</p>
+        </div>
+        
+        <div class="kanban-board">
+            <!-- To Do Column -->
+            <div class="column todo" data-status="todo">
+                <div class="column-header">
+                    <span class="column-title">📝 To Do</span>
+                    <span class="column-count" id="todo-count">4</span>
+                </div>
+                <div class="cards-container" id="todo-cards">
+                    <div class="card" draggable="true" data-id="1">
+                        <div class="card-header">
+                            <span class="card-title">Create Kevin/Flutra payback plan</span>
+                            <span class="card-priority priority-high"></span>
+                        </div>
+                        <div class="card-description">Structure repayment schedule for loans</div>
+                        <div class="card-meta">
+                            <div class="card-tags">
+                                <span class="card-tag">Finance</span>
+                            </div>
+                            <span class="card-due urgent">⏰ ASAP</span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                    </div>
+                    
+                    <div class="card" draggable="true" data-id="2">
+                        <div class="card-header">
+                            <span class="card-title">Follow up on Hutton Project</span>
+                            <span class="card-priority priority-high"></span>
+                        </div>
+                        <div class="card-description">Boot Camp March 3-5 - need job descriptions & venue confirmation</div>
+                        <div class="card-meta">
+                            <div class="card-tags">
+                                <span class="card-tag">Boot Camp</span>
+                            </div>
+                            <span class="card-due">📅 Mar 3-5</span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                    </div>
+                    
+                    <div class="card" draggable="true" data-id="3">
+                        <div class="card-header">
+                            <span class="card-title">Get Outlook admin consent</span>
+                            <span class="card-priority priority-medium"></span>
+                        </div>
+                        <div class="card-description">Enable calendar integration for better automation</div>
+                        <div class="card-meta">
+                            <div class="card-tags">
+                                <span class="card-tag tech">Tech</span>
+                            </div>
+                            <span class="card-due">📅 This week</span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                    </div>
+                    
+                    <div class="card" draggable="true" data-id="4">
+                        <div class="card-header">
+                            <span class="card-title">Algoma value cards printing</span>
+                            <span class="card-priority priority-high"></span>
+                        </div>
+                        <div class="card-description">Contacted PrintThree, waiting to hear back</div>
+                        <div class="card-meta">
+                            <div class="card-tags">
+                                <span class="card-tag">Printing</span>
+                            </div>
+                            <span class="card-due urgent">⏰ Today</span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                    </div>
+                </div>
+                <button class="add-card-btn" onclick="openModal('todo')">+ Add Task</button>
+            </div>
+            
+            <!-- In Progress Column -->
+            <div class="column inprogress" data-status="inprogress">
+                <div class="column-header">
+                    <span class="column-title">🚀 In Progress</span>
+                    <span class="column-count" id="progress-count">2</span>
+                </div>
+                <div class="cards-container" id="progress-cards">
+                    <div class="card" draggable="true" data-id="5">
+                        <div class="card-header">
+                            <span class="card-title">Schedule 10 appointments this week</span>
+                            <span class="card-priority priority-high"></span>
+                        </div>
+                        <div class="card-description">Currently 1/10 scheduled (Scott Eccles)</div>
+                        <div class="card-meta">
+                            <div class="card-tags">
+                                <span class="card-tag sales">Sales</span>
+                            </div>
+                            <span class="card-due">📅 Feb 22</span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                    </div>
+                    
+                    <div class="card" draggable="true" data-id="6">
+                        <div class="card-header">
+                            <span class="card-title">Push Niagara seats (14 → 18)</span>
+                            <span class="card-priority priority-high"></span>
+                        </div>
+                        <div class="card-description">Need 4 more seats to hit milestone</div>
+                        <div class="card-meta">
+                            <div class="card-tags">
+                                <span class="card-tag niagara">Niagara</span>
+                            </div>
+                            <span class="card-due">📅 This week</span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                    </div>
+                </div>
+                <button class="add-card-btn" onclick="openModal('inprogress')">+ Add Task</button>
+            </div>
+            
+            <!-- Review Column -->
+            <div class="column review" data-status="review">
+                <div class="column-header">
+                    <span class="column-title">👀 Review</span>
+                    <span class="column-count" id="review-count">1</span>
+                </div>
+                <div class="cards-container" id="review-cards">
+                    <div class="card" draggable="true" data-id="7">
+                        <div class="card-header">
+                            <span class="card-title">TJN Tasks for Yehuda</span>
+                            <span class="card-priority priority-medium"></span>
+                        </div>
+                        <div class="card-description">Send PDF + makeup schedule + "Quick and Easy Way"</div>
+                        <div class="card-meta">
+                            <div class="card-tags">
+                                <span class="card-tag">Admin</span>
+                            </div>
+                            <span class="card-due">📅 Pending</span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                    </div>
+                </div>
+                <button class="add-card-btn" onclick="openModal('review')">+ Add Task</button>
+            </div>
+            
+            <!-- Done Column -->
+            <div class="column done" data-status="done">
+                <div class="column-header">
+                    <span class="column-title">✅ Done</span>
+                    <span class="column-count" id="done-count">1</span>
+                </div>
+                <div class="cards-container" id="done-cards">
+                    <div class="card" draggable="true" data-id="8">
+                        <div class="card-header">
+                            <span class="card-title">Merge Command Center dashboards</span>
+                            <span class="card-priority priority-medium"></span>
+                        </div>
+                        <div class="card-description">Combined Netlify and local dashboard data</div>
+                        <div class="card-meta">
+                            <div class="card-tags">
+                                <span class="card-tag tech">Tech</span>
+                            </div>
+                            <span class="card-due">✓ Done</span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                    </div>
+                </div>
+                <button class="add-card-btn" onclick="openModal('done')">+ Add Task</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Task Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h3>✨ Add New Task</h3>
+            <div class="form-group">
+                <label>Task Title</label>
+                <input type="text" id="taskTitle" placeholder="What needs to be done?">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="taskDesc" placeholder="Add details..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Priority</label>
+                <select id="taskPriority">
+                    <option value="high">🔴 High</option>
+                    <option value="medium" selected>🟡 Medium</option>
+                    <option value="low">🟢 Low</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tags (comma separated)</label>
+                <input type="text" id="taskTags" placeholder="e.g., Sales, Niagara, Tech">
+            </div>
+            <div class="form-group">
+                <label>Due Date</label>
+                <input type="text" id="taskDue" placeholder="e.g., Today, Feb 22, ASAP">
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn btn-primary" onclick="addTask()">Add Task</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentColumn = '';
+        let draggedCard = null;
+        let cardIdCounter = 9;
+        
+        // Initialize drag and drop
+        function initDragAndDrop() {
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('dragstart', dragStart);
+                card.addEventListener('dragend', dragEnd);
+            });
+            
+            document.querySelectorAll('.cards-container').forEach(container => {
+                container.addEventListener('dragover', dragOver);
+                container.addEventListener('drop', drop);
+                container.addEventListener('dragenter', dragEnter);
+                container.addEventListener('dragleave', dragLeave);
+            });
+        }
+        
+        function dragStart(e) {
+            draggedCard = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+        }
+        
+        function dragEnd(e) {
+            this.classList.remove('dragging');
+            draggedCard = null;
+            updateCounts();
+            saveToLocalStorage();
+        }
+        
+        function dragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            
+            const afterElement = getDragAfterElement(this, e.clientY);
+            if (afterElement == null) {
+                this.appendChild(draggedCard);
+            } else {
+                this.insertBefore(draggedCard, afterElement);
+            }
+        }
+        
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.card:not(.dragging)')];
+            
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+        
+        function dragEnter(e) {
+            e.preventDefault();
+            this.classList.add('drag-over');
+        }
+        
+        function dragLeave(e) {
+            this.classList.remove('drag-over');
+        }
+        
+        function drop(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            updateCounts();
+            saveToLocalStorage();
+        }
+        
+        function updateCounts() {
+            document.querySelectorAll('.column').forEach(column => {
+                const count = column.querySelectorAll('.card').length;
+                column.querySelector('.column-count').textContent = count;
+            });
+        }
+        
+        // Modal functions
+        function openModal(column) {
+            currentColumn = column;
+            document.getElementById('modalOverlay').classList.add('active');
+            document.getElementById('taskTitle').focus();
+        }
+        
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            clearModalInputs();
+        }
+        
+        function clearModalInputs() {
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDesc').value = '';
+            document.getElementById('taskTags').value = '';
+            document.getElementById('taskDue').value = '';
+            document.getElementById('taskPriority').value = 'medium';
+        }
+        
+        function addTask() {
+            const title = document.getElementById('taskTitle').value.trim();
+            const desc = document.getElementById('taskDesc').value.trim();
+            const priority = document.getElementById('taskPriority').value;
+            const tags = document.getElementById('taskTags').value.trim();
+            const due = document.getElementById('taskDue').value.trim();
+            
+            if (!title) {
+                alert('Please enter a task title');
+                return;
+            }
+            
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.draggable = true;
+            card.dataset.id = cardIdCounter++;
+            
+            const tagsHtml = tags ? tags.split(',').map(tag => 
+                `<span class="card-tag">${tag.trim()}</span>`
+            ).join('') : '<span class="card-tag">General</span>';
+            
+            const dueClass = (due.toLowerCase().includes('asap') || due.toLowerCase().includes('today')) ? 'urgent' : '';
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <span class="card-title">${title}</span>
+                    <span class="card-priority priority-${priority}"></span>
+                </div>
+                ${desc ? `<div class="card-description">${desc}</div>` : ''}
+                <div class="card-meta">
+                    <div class="card-tags">${tagsHtml}</div>
+                    <span class="card-due ${dueClass}">${due ? '📅 ' + due : ''}</span>
+                </div>
+                <button class="delete-btn" onclick="deleteCard(this)">×</button>
+            `;
+            
+            card.addEventListener('dragstart', dragStart);
+            card.addEventListener('dragend', dragEnd);
+            
+            const containerId = currentColumn + '-cards';
+            document.getElementById(containerId).appendChild(card);
+            
+            closeModal();
+            updateCounts();
+            saveToLocalStorage();
+        }
+        
+        function deleteCard(btn) {
+            if (confirm('Delete this task?')) {
+                btn.parentElement.remove();
+                updateCounts();
+                saveToLocalStorage();
+            }
+        }
+        
+        // LocalStorage functions
+        function saveToLocalStorage() {
+            const boardData = {};
+            document.querySelectorAll('.column').forEach(column => {
+                const status = column.dataset.status;
+                const cards = [];
+                column.querySelectorAll('.card').forEach(card => {
+                    cards.push({
+                        id: card.dataset.id,
+                        title: card.querySelector('.card-title').textContent,
+                        desc: card.querySelector('.card-description')?.textContent || '',
+                        priority: card.querySelector('.card-priority').classList[1].replace('priority-', ''),
+                        tags: Array.from(card.querySelectorAll('.card-tag')).map(t => t.textContent).join(', '),
+                        due: card.querySelector('.card-due')?.textContent.replace('📅 ', '').replace('⏰ ', '') || ''
+                    });
+                });
+                boardData[status] = cards;
+            });
+            localStorage.setItem('taskKanban', JSON.stringify(boardData));
+        }
+        
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('taskKanban');
+            if (!saved) return;
+            
+            try {
+                const boardData = JSON.parse(saved);
+                // In a real implementation, we'd rebuild the cards from saved data
+                console.log('Loaded saved board state');
+            } catch (e) {
+                console.error('Error loading board:', e);
+            }
+        }
+        
+        // Close modal on outside click
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        
+        // Enter key to submit
+        document.getElementById('taskDue').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addTask();
+        });
+        
+        // Initialize
+        initDragAndDrop();
+        updateCounts();
+        loadFromLocalStorage();
+    </script>
+</body>
+</html>

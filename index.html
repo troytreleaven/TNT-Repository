@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dale Carnegie Dashboard - Troy Treleaven</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.3);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            color: #00d4ff;
+        }
+        
+        .header .date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .week-targets {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .week-targets h2 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .targets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .target-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .target-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+        
+        .target-card .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .target-card .label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+        
+        .target-card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+        
+        .target-card .progress {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card h3 {
+            font-size: 1.2rem;
+            color: #00d4ff;
+        }
+        
+        .card .link-btn {
+            font-size: 0.8rem;
+            color: #00d4ff;
+            text-decoration: none;
+            padding: 6px 12px;
+            border: 1px solid #00d4ff;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        
+        .card .link-btn:hover {
+            background: #00d4ff;
+            color: #1a1a2e;
+        }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-label {
+            color: #aaa;
+        }
+        
+        .metric-value {
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .status-ontrack { background: #00c853; color: #000; }
+        .status-warning { background: #ffab00; color: #000; }
+        .status-urgent { background: #ff1744; color: #fff; }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            background: rgba(0,212,255,0.1);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .action-btn:hover {
+            background: #00d4ff;
+            color: #1a1a2e;
+        }
+        
+        .focus-area {
+            background: rgba(255,193,7,0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .focus-area h4 {
+            color: #ffc107;
+            margin-bottom: 8px;
+        }
+        
+        .focus-area p {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>🎯 Troy's Command Center</h1>
+            <div class="date" id="currentDate"></div>
+        </div>
+        <div style="text-align: right;">
+            <div style="font-size: 1.2rem; color: #00d4ff;">Troy Treleaven</div>
+            <div style="font-size: 0.85rem; color: #888;">Ontario & Maritimes</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Week Targets -->
+        <div class="week-targets">
+            <h2>📅 This Week's Targets (Feb 16-22)</h2>
+            <div class="targets-grid">
+                <a href="appointments.html" class="target-card">
+                    <div class="icon">📞</div>
+                    <div class="label">Appointments</div>
+                    <div class="value">10</div>
+                    <div class="progress">1 / 10 scheduled</div>
+                </a>
+                
+                <a href="seats.html" class="target-card">
+                    <div class="icon">🪑</div>
+                    <div class="label">Seat Target</div>
+                    <div class="value">6-8</div>
+                    <div class="progress">Focus: Niagara</div>
+                </a>
+                
+                <a href="pipeline.html" class="target-card">
+                    <div class="icon">💰</div>
+                    <div class="label">Pipeline Added</div>
+                    <div class="value">$30K</div>
+                    <div class="progress">Target: $125K total</div>
+                </a>
+                
+                <a href="milestone.html" class="target-card">
+                    <div class="icon">🏆</div>
+                    <div class="label">Big Milestone</div>
+                    <div class="value">2.5×</div>
+                    <div class="progress">Niagara ≥18 seats</div>
+                </a>
+            </div>
+            
+            <div class="focus-area">
+                <h4>🎯 Weekly Focus</h4>
+                <p><strong>Niagara closes</strong> + <strong>Boot Camp positioning</strong>. Push for the 2.5× moment: Pipeline ≥$125K with Niagara at 18+ seats.</p>
+            </div>
+            
+            <div class="focus-area" style="background: rgba(0,212,255,0.1); border-left-color: #00d4ff; margin-top: 15px;">
+                <h4 style="color: #00d4ff;">📅 Today's Schedule (Feb 17)</h4>
+                <p><strong>9:00 AM</strong> — Call with Scott Eccles<br>
+                <strong>10:00 AM - 12:00 PM</strong> — Prospecting Block ⭐<br>
+                <strong>Afternoon</strong> — Meetings (see Outlook)</p>
+                <p style="margin-top: 8px; font-size: 0.85rem;">💡 <em>Prime prospecting window: 10-12 PM. Perfect for booking those 10 appointments!</em></p>
+            </div>
+            
+            <div class="focus-area" style="background: rgba(156,39,176,0.1); border-left-color: #9c27b0; margin-top: 15px;">
+                <h4 style="color: #9c27b0;">📅 Tomorrow (Feb 18)</h4>
+                <p><strong>9:00 AM</strong> — Meeting<br>
+                <strong>10:00 AM - 12:00 PM</strong> — Prospecting Block ⭐<br>
+                <strong>2:00 PM</strong> — Meeting</p>
+            </div>
+        </div>
+        
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Pipeline Status -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>💼 Pipeline Status</h3>
+                    <a href="pipeline-kanban.html" class="link-btn">View Kanban →</a>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Total Pipeline</span>
+                    <span class="metric-value">$480K</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Weighted Forecast</span>
+                    <span class="metric-value">$128K</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Collected YTD</span>
+                    <span class="metric-value">$123K</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Hot Opportunities</span>
+                    <span class="status-badge status-warning">6 Active</span>
+                </div>
+            </div>
+            
+            <!-- Niagara Program -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>🌊 Niagara Program</h3>
+                    <a href="seats.html" class="link-btn">View Details →</a>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Current Seats</span>
+                    <span class="metric-value">14</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Weekly Target</span>
+                    <span class="metric-value">+6-8</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Milestone Goal</span>
+                    <span class="metric-value">≥18 seats</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Status</span>
+                    <span class="status-badge status-warning">Needs Push</span>
+                </div>
+            </div>
+            
+            <!-- Appointments -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>📅 This Week's Appointments</h3>
+                    <a href="appointments.html" class="link-btn">View Details →</a>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Scheduled</span>
+                    <span class="metric-value">1 / 10</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Completed</span>
+                    <span class="metric-value">0</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">No-Shows</span>
+                    <span class="metric-value">0</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Status</span>
+                    <span class="status-badge status-warning">In Progress</span>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>⚡ Quick Actions</h3>
+                </div>
+                <div class="quick-actions">
+                    <a href="tasks-kanban.html" class="action-btn">📋 Task Kanban</a>
+                    <a href="pipeline-kanban.html" class="action-btn">💰 Pipeline Kanban</a>
+                    <a href="kanban.html" class="action-btn">📊 Legacy Board</a>
+                    <a href="seats.html" class="action-btn">🪑 Niagara Seats</a>
+                </div>
+            </div>
+            
+            <!-- Today's Tasks -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>✅ Today's Tasks (Feb 17)</h3>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">🖨️ Algoma Value Cards</span>
+                    <span class="status-badge status-ontrack">PrintThree</span>
+                </div>
+                <div style="padding: 10px 0; color: #aaa; font-size: 0.9rem;">
+                    Contacted PrintThree, waiting to hear back
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">📞 9 AM Call</span>
+                    <span class="status-badge status-ontrack">Scott Eccles</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">🎯 Prospecting Block</span>
+                    <span class="status-badge status-warning">10-12 PM</span>
+                </div>
+            </div>
+            
+            <!-- Hot Opportunities -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>🔥 Hot Opportunities</h3>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Mazak Corporation</span>
+                    <span class="metric-value">$5,800</span>
+                </div>
+                <div style="padding: 5px 0; color: #888; font-size: 0.85rem;">2 for KW LWI • 75% probability</div>
+                <div class="metric-row">
+                    <span class="metric-label">Berq RNG Coaching + Boot Camp</span>
+                    <span class="metric-value">$6,559</span>
+                </div>
+                <div style="padding: 5px 0; color: #888; font-size: 0.85rem;">75% probability</div>
+                <div class="metric-row">
+                    <span class="metric-label">Angstrom Engineering Inc.</span>
+                    <span class="metric-value">$0</span>
+                </div>
+                <div style="padding: 5px 0; color: #888; font-size: 0.85rem;">2 for DCC • Early stage</div>
+                <div class="metric-row">
+                    <span class="metric-label">Jeff & Rob Huten LWI Upgrade</span>
+                    <span class="metric-value">$1,600</span>
+                </div>
+                <div style="padding: 5px 0; color: #888; font-size: 0.85rem;">100% probability</div>
+            </div>
+            
+            <!-- Recent Collected -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>✅ Recent Collected</h3>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Hutton and Company</span>
+                    <span class="metric-value" style="color: #00c853;">$39,000</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Algoma Central LTM</span>
+                    <span class="metric-value" style="color: #00c853;">$31,000</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Cambridge Elevating</span>
+                    <span class="metric-value" style="color: #00c853;">$11,475</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Andy Xiao MTE</span>
+                    <span class="metric-value" style="color: #00c853;">$2,900</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Owen Lee - Hamilton Dale</span>
+                    <span class="metric-value" style="color: #00c853;">$2,500</span>
+                </div>
+                <div style="padding: 15px 0 0 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 15px;">
+                    <span class="metric-label">Total Collected</span>
+                    <span class="metric-value" style="color: #00c853; font-size: 1.5rem;">$86,875</span>
+                </div>
+            </div>
+            
+            <!-- Pending Tasks -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>📋 Pending Tasks</h3>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span class="status-badge status-urgent" style="margin-right: 10px;">HIGH</span>
+                    <span>Create Kevin/Flutra payback plan</span>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span class="status-badge status-urgent" style="margin-right: 10px;">HIGH</span>
+                    <span>Follow up on Hutton Project (Boot Camp Mar 3-5)</span>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span class="status-badge status-warning" style="margin-right: 10px;">MED</span>
+                    <span>Get Outlook admin consent</span>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span class="status-badge" style="background: #888; margin-right: 10px;">LOW</span>
+                    <span>Ask Andi about coaching</span>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span class="status-badge" style="background: #888; margin-right: 10px;">LOW</span>
+                    <span>Get window fixed</span>
+                </div>
+                <div style="padding: 10px 0;">
+                    <span class="status-badge status-warning" style="margin-right: 10px;">PENDING</span>
+                    <span>TJN Tasks: Send PDF + makeup schedule + "Quick and Easy Way" to Yehuda</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Update current date
+        function updateDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+        }
+        updateDate();
+    </script>
+</body>
+</html>

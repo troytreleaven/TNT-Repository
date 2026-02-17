@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troy's Command Center - Complete Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border: #30363d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #238636;
+            --accent-yellow: #d29922;
+            --accent-red: #da3633;
+            --accent-purple: #a371f7;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 1.5em; }
+        .header .date { color: var(--text-secondary); font-size: 0.9em; }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .card h2 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card h2 .icon { font-size: 1.2em; }
+        .metric-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .metric {
+            background: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+        .metric-value.warning { color: var(--accent-yellow); }
+        .metric-value.danger { color: var(--accent-red); }
+        .metric-label {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .pipeline-col {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .pipeline-col h3 {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .deal {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent-blue);
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        .deal.hot { border-left-color: var(--accent-red); }
+        .deal.closed { border-left-color: var(--accent-green); }
+        .deal-amount { color: var(--accent-green); font-weight: 600; }
+        .calendar-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .cal-day {
+            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
+        }
+        .cal-day:last-child { border-bottom: none; }
+        .cal-date {
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin-bottom: 5px;
+        }
+        .cal-date.today { color: var(--accent-green); }
+        .cal-event {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 0;
+            font-size: 0.9em;
+        }
+        .cal-time { color: var(--text-secondary); min-width: 70px; }
+        .cal-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-work { background: var(--accent-blue); }
+        .dot-personal { background: var(--accent-yellow); }
+        .dot-planning { background: var(--accent-green); }
+        .task-list { list-style: none; }
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px;
+            background: var(--bg-primary);
+            margin-bottom: 8px;
+            border-radius: 6px;
+        }
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .task-content { flex: 1; }
+        .task-time {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+        }
+        .full-width { grid-column: 1 / -1; }
+        .quick-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .quick-link {
+            background: var(--bg-tertiary);
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9em;
+            transition: background 0.2s;
+        }
+        .quick-link:hover { background: var(--border); }
+        .status-bar {
+            display: flex;
+            gap: 20px;
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+        .status-item { display: flex; align-items: center; gap: 5px; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>🎯 Troy's Command Center</h1>
+            <div class="date">Sunday, February 15, 2026</div>
+        </div>
+        <div class="status-bar">
+            <div class="status-item"><div class="status-dot"></div> System Online</div>
+            <div class="status-item">💰 Pipeline: $559K</div>
+            <div class="status-item">📅 6 Tasks Today</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Pipeline Overview -->
+        <div class="card full-width">
+            <h2><span class="icon">💰</span> Pipeline Overview</h2>
+            <div class="metric-row">
+                <div class="metric">
+                    <div class="metric-value">$461K</div>
+                    <div class="metric-label">Active Pipeline</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value warning">$14K</div>
+                    <div class="metric-label">Hot Opportunities</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">$84K</div>
+                    <div class="metric-label">Collected 2026</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">$559K</div>
+                    <div class="metric-label">Total Value</div>
+                </div>
+            </div>
+            <div class="pipeline-grid">
+                <div class="pipeline-col">
+                    <h3>🔍 Prospecting</h3>
+                    <div class="deal">RHI Magnesita<br><span class="deal-amount">$40K</span></div>
+                    <div class="deal">SBI (Indian Bank)<br><span class="deal-amount">$22.5K</span></div>
+                    <div class="deal">MTE Coaching<br><span class="deal-amount">$20K</span></div>
+                    <div class="deal">Earth Fresh Foods<br><span class="deal-amount">$14.5K</span></div>
+                    <div class="deal">Thorpe Handcrafted<br><span class="deal-amount">$17.4K</span></div>
+                </div>
+                <div class="pipeline-col">
+                    <h3>✅ Qualified</h3>
+                    <div class="deal">BCM Insurance<br><span class="deal-amount">$40K</span></div>
+                    <div class="deal">Michipoten First Nation<br><span class="deal-amount">$35K</span></div>
+                    <div class="deal">Toronto Jewish Network<br><span class="deal-amount">$27K</span></div>
+                    <div class="deal">WalterFedy<br><span class="deal-amount">$17.5K</span></div>
+                    <div class="deal">BMO Capital Markets<br><span class="deal-amount">$40K</span></div>
+                </div>
+                <div class="pipeline-col">
+                    <h3>📄 Proposal</h3>
+                    <div class="deal">CMTO<br><span class="deal-amount">$40K</span></div>
+                    <div class="deal">Berq RNG<br><span class="deal-amount">$17.4K</span></div>
+                    <div class="deal">Scott Eccles<br><span class="deal-amount">$2.5K</span></div>
+                </div>
+                <div class="pipeline-col">
+                    <h3>🤝 Negotiation</h3>
+                    <div class="deal">Meridian Credit Union<br><span class="deal-amount">$5K</span></div>
+                    <div class="deal">Automotive Group<br><span class="deal-amount">$20K</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hot Opportunities -->
+        <div class="card">
+            <h2><span class="icon">🔥</span> Hot Opportunities</h2>
+            <div class="deal hot">Mazak Corporation - 2 for KW LWI<br><span class="deal-amount">$5,800</span> <span style="color:var(--text-secondary)">| 75%</span></div>
+            <div class="deal hot">Berq RNG Coaching + Boot Camp<br><span class="deal-amount">$6,559</span> <span style="color:var(--text-secondary)">| 75%</span></div>
+            <div class="deal hot">Angstrom Engineering Inc.<br><span style="color:var(--text-secondary)">$0 | 2 for DCC</span></div>
+            <div class="deal hot">Jeff & Rob Huten LWI Upgrade<br><span class="deal-amount">$1,600</span> <span style="color:var(--text-secondary)">| 100%</span></div>
+        </div>
+
+        <!-- Collected -->
+        <div class="card">
+            <h2><span class="icon">✅</span> Recent Collected</h2>
+            <div class="deal closed">Cambridge Elevating<br><span class="deal-amount">$11,475</span></div>
+            <div class="deal closed">Andy Xiao MTE<br><span class="deal-amount">$2,900</span></div>
+            <div class="deal closed">Algoma Central LTM<br><span class="deal-amount">$31,000</span></div>
+            <div class="deal closed">Hutton and Company<br><span class="deal-amount">$39,000</span></div>
+            <div class="deal closed">Owen Lee - Hamilton Dale<br><span class="deal-amount">$2,500</span></div>
+        </div>
+
+        <!-- Today's Schedule -->
+        <div class="card">
+            <h2><span class="icon">📅</span> Today's Schedule (Feb 15)</h2>
+            <div class="calendar-list">
+                <div class="cal-day">
+                    <div class="cal-date today">Sunday Tasks</div>
+                    <div class="cal-event">
+                        <div class="cal-time">9:00 AM</div>
+                        <div class="cal-dot dot-personal"></div>
+                        <div>Cancel Vidyard ($361.36)</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">9:15 AM</div>
+                        <div class="cal-dot dot-personal"></div>
+                        <div>Bill Review & Subscription Cleanup</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">10:00 AM</div>
+                        <div class="cal-dot dot-work"></div>
+                        <div>Create Lead with Impact Onboarding SOP</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">11:00 AM</div>
+                        <div class="cal-dot dot-planning"></div>
+                        <div>Plan Sales Process Mining Project</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">2:00 PM</div>
+                        <div class="cal-dot dot-work"></div>
+                        <div>Create Hal Somers Podcast Short</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- This Week -->
+        <div class="card">
+            <h2><span class="icon">📆</span> This Week Overview</h2>
+            <div class="calendar-list">
+                <div class="cal-day">
+                    <div class="cal-date">Mon Feb 17</div>
+                    <div class="cal-event">
+                        <div class="cal-dot dot-personal"></div>
+                        <div>🏖️ Family Day (Holiday)</div>
+                    </div>
+                </div>
+                <div class="cal-day">
+                    <div class="cal-date">Tue Feb 18</div>
+                    <div class="cal-event">
+                        <div class="cal-time">9:00 AM</div>
+                        <div class="cal-dot dot-planning"></div>
+                        <div>Scott Eccles call</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">10:00 AM</div>
+                        <div class="cal-dot dot-planning"></div>
+                        <div>Prospecting Block</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">1:45 PM</div>
+                        <div class="cal-dot dot-work"></div>
+                        <div>Owen Lee</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">2:30 PM</div>
+                        <div class="cal-dot dot-work"></div>
+                        <div>Jeff Hutton (1h)</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">4:00 PM</div>
+                        <div class="cal-dot dot-work"></div>
+                        <div>Rob Hutton (1h)</div>
+                    </div>
+                </div>
+                <div class="cal-day">
+                    <div class="cal-date">Wed Feb 19</div>
+                    <div class="cal-event">
+                        <div class="cal-time">9:00 AM</div>
+                        <div class="cal-dot dot-work"></div>
+                        <div>Ben McLeod (15m)</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">10:00 AM</div>
+                        <div class="cal-dot dot-planning"></div>
+                        <div>Prospecting Block</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">2:00 PM</div>
+                        <div class="cal-dot dot-work"></div>
+                        <div>David Hancock</div>
+                    </div>
+                </div>
+                <div class="cal-day">
+                    <div class="cal-date">Thu Feb 20</div>
+                    <div class="cal-event">
+                        <div class="cal-time">7:00 AM</div>
+                        <div class="cal-dot dot-personal"></div>
+                        <div>☕ Coffee with Jeff (Brother)</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">10:00 AM</div>
+                        <div class="cal-dot dot-planning"></div>
+                        <div>Prospecting Block</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">4:30 PM</div>
+                        <div class="cal-dot dot-planning"></div>
+                        <div>12WY Weekly Review</div>
+                    </div>
+                </div>
+                <div class="cal-day">
+                    <div class="cal-date">Fri Feb 21</div>
+                    <div class="cal-event">
+                        <div class="cal-time">8:15 AM</div>
+                        <div class="cal-dot dot-personal"></div>
+                        <div>🩺 TJ Doctor's Appointment</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">10:00 AM</div>
+                        <div class="cal-dot dot-planning"></div>
+                        <div>Prospecting Block</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">2:00 PM</div>
+                        <div class="cal-dot dot-work"></div>
+                        <div>Dave Honick</div>
+                    </div>
+                    <div class="cal-event">
+                        <div class="cal-time">3:00 PM</div>
+                        <div class="cal-dot dot-planning"></div>
+                        <div>Company Progress Check-in</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Tasks -->
+        <div class="card">
+            <h2><span class="icon">📋</span> Pending Tasks</h2>
+            <ul class="task-list">
+                <li class="task-item">
+                    <div class="task-checkbox"></div>
+                    <div class="task-content">
+                        <div>Create Kevin/Flutra payback plan</div>
+                        <div class="task-time">High Priority • Due ASAP</div>
+                    </div>
+                </li>
+                <li class="task-item">
+                    <div class="task-checkbox"></div>
+                    <div class="task-content">
+                        <div>Follow up on Hutton Project (Boot Camp Mar 3-5)</div>
+                        <div class="task-time">High Priority</div>
+                    </div>
+                </li>
+                <li class="task-item">
+                    <div class="task-checkbox"></div>
+                    <div class="task-content">
+                        <div>Get Outlook admin consent</div>
+                        <div class="task-time">Medium Priority</div>
+                    </div>
+                </li>
+                <li class="task-item">
+                    <div class="task-checkbox"></div>
+                    <div class="task-content">
+                        <div>Ask Andi about coaching</div>
+                        <div class="task-time">Low Priority</div>
+                    </div>
+                </li>
+                <li class="task-item">
+                    <div class="task-checkbox"></div>
+                    <div class="task-content">
+                        <div>Get window fixed</div>
+                        <div class="task-time">Low Priority</div>
+                    </div>
+                </li>
+                <li class="task-item">
+                    <div class="task-checkbox"></div>
+                    <div class="task-content">
+                        <div>TJN Tasks: Send PDF + makeup schedule + "Quick and Easy Way" to Yehuda</div>
+                        <div class="task-time">Pending</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="card full-width">
+            <h2><span class="icon">🔗</span> Quick Links & Resources</h2>
+            <div class="quick-links">
+                <a href="https://dalecarnegieassociates-my.sharepoint.com/:f:/g/personal/inno_maog_dalecarnegie_com/IgBNcglW6F5_Q418r5lWHYC4AaGRVL-DAO7lj8AXLtyjAbU" class="quick-link" target="_blank">📁 Podcast SharePoint</a>
+                <a href="https://www.canva.com/folder/FAFtKHdoMYk" class="quick-link" target="_blank">🎨 Canva Assets</a>
+                <a href="#" class="quick-link">📊 Google Sheets Pipeline</a>
+                <a href="#" class="quick-link">📧 Outlook Calendar</a>
+                <a href="https://fathom.video" class="quick-link" target="_blank">🎥 Fathom Recordings</a>
+                <a href="https://ctrl.maton.ai" class="quick-link" target="_blank">⚙️ OpenClaw Gateway</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

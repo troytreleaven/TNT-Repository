@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Board - Dale Carnegie Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.3);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            color: #00d4ff;
+        }
+        
+        .header a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .header a:hover {
+            color: #00d4ff;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .kanban-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .tab-btn {
+            padding: 12px 25px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: #00d4ff;
+            color: #1a1a2e;
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .column {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 400px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        .column-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .column-count {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        
+        .column.todo { border-top: 4px solid #ff1744; }
+        .column.inprogress { border-top: 4px solid #ffab00; }
+        .column.done { border-top: 4px solid #00c853; }
+        
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 300px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: grab;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .card.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        
+        .card-priority {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .priority-high { background: #ff1744; }
+        .priority-medium { background: #ffab00; }
+        .priority-low { background: #00c853; }
+        
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        .card-tag {
+            background: rgba(0,212,255,0.2);
+            color: #00d4ff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        
+        .add-card-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 2px dashed rgba(255,255,255,0.2);
+            color: #888;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .add-card-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+        
+        .pipeline-card .deal-value {
+            font-size: 1.2rem;
+            color: #00d4ff;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .pipeline-card .company {
+            color: #aaa;
+            font-size: 0.85rem;
+        }
+        
+        /* Modal for adding cards */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #1a1a2e;
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .modal h3 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+        }
+        
+        .modal input, .modal textarea, .modal select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-family: inherit;
+        }
+        
+        .modal input:focus, .modal textarea:focus, .modal select:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            background: #00d4ff;
+            color: #1a1a2e;
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255,23,68,0.3);
+            border: none;
+            color: #ff1744;
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+        }
+        
+        .card:hover .delete-btn {
+            opacity: 1;
+        }
+        
+        .delete-btn:hover {
+            background: rgba(255,23,68,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>📋 Kanban Board</h1>
+        </div>
+        <a href="index.html">← Back to Dashboard</a>
+    </div>
+    
+    <div class="container">
+        <div class="kanban-tabs">
+            <button class="tab-btn active" onclick="switchTab('tasks')">✅ Tasks</button>
+            <button class="tab-btn" onclick="switchTab('pipeline')">💰 Pipeline</button>
+        </div>
+        
+        <!-- Tasks Board -->
+        <div id="tasks-board" class="board-content">
+            <div class="kanban-board">
+                <div class="column todo" data-status="todo">
+                    <div class="column-header">
+                        <span class="column-title">📝 To Do</span>
+                        <span class="column-count" id="todo-count">3</span>
+                    </div>
+                    <div class="cards-container" id="todo-cards">
+                        <div class="card" draggable="true" data-id="1">
+                            <div class="card-header">
+                                <span class="card-title">Schedule 10 appointments this week</span>
+                                <span class="card-priority priority-high"></span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="card-tag">Sales</span>
+                                <span>Due: Feb 22</span>
+                            </div>
+                            <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                        </div>
+                        
+                        <div class="card" draggable="true" data-id="2">
+                            <div class="card-header">
+                                <span class="card-title">Follow up with Niagara prospects</span>
+                                <span class="card-priority priority-high"></span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="card-tag">Niagara</span>
+                                <span>Due: Today</span>
+                            </div>
+                            <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                        </div>
+                        
+                        <div class="card" draggable="true" data-id="3">
+                            <div class="card-header">
+                                <span class="card-title">Send Boot Camp positioning emails</span>
+                                <span class="card-priority priority-medium"></span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="card-tag">Marketing</span>
+                                <span>Due: Wed</span>
+                            </div>
+                            <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                        </div>
+                    </div>
+                    <button class="add-card-btn" onclick="openModal('todo')">+ Add Task</button>
+                </div>
+                
+                <div class="column inprogress" data-status="inprogress">
+                    <div class="column-header">
+                        <span class="column-title">🚀 In Progress</span>
+                        <span class="column-count" id="progress-count">1</span>
+                    </div>
+                    <div class="cards-container" id="progress-cards">
+                        <div class="card" draggable="true" data-id="4">
+                            <div class="card-header">
+                                <span class="card-title">Outlook calendar integration setup</span>
+                                <span class="card-priority priority-medium"></span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="card-tag">Tech</span>
+                                <span>With Admin</span>
+                            </div>
+                            <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                        </div>
+                    </div>
+                    <button class="add-card-btn" onclick="openModal('inprogress')">+ Add Task</button>
+                </div>
+                
+                <div class="column done" data-status="done">
+                    <div class="column-header">
+                        <span class="column-title">✅ Done</span>
+                        <span class="column-count" id="done-count">0</span>
+                    </div>
+                    <div class="cards-container" id="done-cards">
+                    </div>
+                    <button class="add-card-btn" onclick="openModal('done')">+ Add Task</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pipeline Board -->
+        <div id="pipeline-board" class="board-content" style="display: none;">
+            <div class="kanban-board">
+                <div class="column todo" data-status="prospect">
+                    <div class="column-header">
+                        <span class="column-title">👥 Prospects</span>
+                        <span class="column-count" id="prospect-count">2</span>
+                    </div>
+                    <div class="cards-container" id="prospect-cards">
+                        <div class="card pipeline-card" draggable="true" data-id="p1">
+                            <div class="company">ABC Manufacturing</div>
+                            <div class="deal-value">$15,000</div>
+                            <div class="card-header">
+                                <span class="card-title">Leadership Boot Camp - 8 seats</span>
+                                <span class="card-priority priority-high"></span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="card-tag">New Lead</span>
+                                <span>Contact: John</span>
+                            </div>
+                            <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                        </div>
+                        
+                        <div class="card pipeline-card" draggable="true" data-id="p2">
+                            <div class="company">Tech Solutions Inc</div>
+                            <div class="deal-value">$8,500</div>
+                            <div class="card-header">
+                                <span class="card-title">DCC Evening Course</span>
+                                <span class="card-priority priority-medium"></span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="card-tag">Referral</span>
+                                <span>Contact: Sarah</span>
+                            </div>
+                            <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                        </div>
+                    </div>
+                    <button class="add-card-btn" onclick="openPipelineModal('prospect')">+ Add Deal</button>
+                </div>
+                
+                <div class="column inprogress" data-status="proposal">
+                    <div class="column-header">
+                        <span class="column-title">📄 Proposal Sent</span>
+                        <span class="column-count" id="proposal-count">1</span>
+                    </div>
+                    <div class="cards-container" id="proposal-cards">
+                        <div class="card pipeline-card" draggable="true" data-id="p3">
+                            <div class="company">Metro Logistics</div>
+                            <div class="deal-value">$22,000</div>
+                            <div class="card-header">
+                                <span class="card-title">Lead with Impact Package</span>
+                                <span class="card-priority priority-high"></span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="card-tag">Proposal</span>
+                                <span>Sent: Feb 14</span>
+                            </div>
+                            <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                        </div>
+                    </div>
+                    <button class="add-card-btn" onclick="openPipelineModal('proposal')">+ Add Deal</button>
+                </div>
+                
+                <div class="column done" data-status="closed">
+                    <div class="column-header">
+                        <span class="column-title">✅ Closed Won</span>
+                        <span class="column-count" id="closed-count">1</span>
+                    </div>
+                    <div class="cards-container" id="closed-cards">
+                        <div class="card pipeline-card" draggable="true" data-id="p4">
+                            <div class="company">Niagara Falls Tourism</div>
+                            <div class="deal-value">$12,500</div>
+                            <div class="card-header">
+                                <span class="card-title">DCC Program - 5 seats</span>
+                                <span class="card-priority priority-low"></span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="card-tag">Won</span>
+                                <span>Closed: Feb 12</span>
+                            </div>
+                            <button class="delete-btn" onclick="deleteCard(this)">×</button>
+                        </div>
+                    </div>
+                    <button class="add-card-btn" onclick="openPipelineModal('closed')">+ Add Deal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Task Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <h3>Add New Task</h3>
+            <input type="text" id="taskTitle" placeholder="Task title...">
+            <select id="taskPriority">
+                <option value="high">High Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="low">Low Priority</option>
+            </select>
+            <input type="text" id="taskTag" placeholder="Tag (e.g., Sales, Niagara)">
+            <input type="text" id="taskDue" placeholder="Due date">
+            <div class="modal-buttons">
+                <button class="modal-btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn btn-primary" onclick="addTask()">Add Task</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Pipeline Modal -->
+    <div class="modal" id="pipelineModal">
+        <div class="modal-content">
+            <h3>Add New Deal</h3>
+            <input type="text" id="dealCompany" placeholder="Company name...">
+            <input type="text" id="dealValue" placeholder="Deal value (e.g., $15,000)">
+            <input type="text" id="dealTitle" placeholder="Deal title...">
+            <input type="text" id="dealContact" placeholder="Contact person">
+            <select id="dealPriority">
+                <option value="high">High Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="low">Low Priority</option>
+            </select>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-secondary" onclick="closePipelineModal()">Cancel</button>
+                <button class="modal-btn btn-primary" onclick="addDeal()">Add Deal</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentColumn = '';
+        let draggedCard = null;
+        
+        // Drag and drop functionality
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('dragstart', dragStart);
+            card.addEventListener('dragend', dragEnd);
+        });
+        
+        document.querySelectorAll('.cards-container').forEach(container => {
+            container.addEventListener('dragover', dragOver);
+            container.addEventListener('drop', drop);
+            container.addEventListener('dragenter', dragEnter);
+            container.addEventListener('dragleave', dragLeave);
+        });
+        
+        function dragStart(e) {
+            draggedCard = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        
+        function dragEnd(e) {
+            this.classList.remove('dragging');
+            draggedCard = null;
+            updateCounts();
+        }
+        
+        function dragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+        
+        function dragEnter(e) {
+            e.preventDefault();
+            this.style.background = 'rgba(0,212,255,0.1)';
+        }
+        
+        function dragLeave(e) {
+            this.style.background = '';
+        }
+        
+        function drop(e) {
+            e.preventDefault();
+            this.style.background = '';
+            if (draggedCard) {
+                this.appendChild(draggedCard);
+                updateCounts();
+                saveBoard();
+            }
+        }
+        
+        function updateCounts() {
+            document.querySelectorAll('.column').forEach(column => {
+                const count = column.querySelectorAll('.card').length;
+                column.querySelector('.column-count').textContent = count;
+            });
+        }
+        
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'tasks') {
+                document.getElementById('tasks-board').style.display = 'block';
+                document.getElementById('pipeline-board').style.display = 'none';
+            } else {
+                document.getElementById('tasks-board').style.display = 'none';
+                document.getElementById('pipeline-board').style.display = 'block';
+            }
+        }
+        
+        // Modal functions
+        function openModal(column) {
+            currentColumn = column;
+            document.getElementById('taskModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('taskModal').classList.remove('active');
+            clearModalInputs();
+        }
+        
+        function openPipelineModal(column) {
+            currentColumn = column;
+            document.getElementById('pipelineModal').classList.add('active');
+        }
+        
+        function closePipelineModal() {
+            document.getElementById('pipelineModal').classList.remove('active');
+            clearPipelineInputs();
+        }
+        
+        function clearModalInputs() {
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskTag').value = '';
+            document.getElementById('taskDue').value = '';
+        }
+        
+        function clearPipelineInputs() {
+            document.getElementById('dealCompany').value = '';
+            document.getElementById('dealValue').value = '';
+            document.getElementById('dealTitle').value = '';
+            document.getElementById('dealContact').value = '';
+        }
+        
+        function addTask() {
+            const title = document.getElementById('taskTitle').value;
+            const priority = document.getElementById('taskPriority').value;
+            const tag = document.getElementById('taskTag').value || 'General';
+            const due = document.getElementById('taskDue').value || 'No date';
+            
+            if (!title) return;
+            
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.draggable = true;
+            card.innerHTML = `
+                <div class="card-header">
+                    <span class="card-title">${title}</span>
+                    <span class="card-priority priority-${priority}"></span>
+                </div>
+                <div class="card-meta">
+                    <span class="card-tag">${tag}</span>
+                    <span>Due: ${due}</span>
+                </div>
+                <button class="delete-btn" onclick="deleteCard(this)">×</button>
+            `;
+            
+            card.addEventListener('dragstart', dragStart);
+            card.addEventListener('dragend', dragEnd);
+            
+            const containerId = currentColumn + '-cards';
+            document.getElementById(containerId).appendChild(card);
+            
+            closeModal();
+            updateCounts();
+            saveBoard();
+        }
+        
+        function addDeal() {
+            const company = document.getElementById('dealCompany').value;
+            const value = document.getElementById('dealValue').value;
+            const title = document.getElementById('dealTitle').value;
+            const contact = document.getElementById('dealContact').value;
+            const priority = document.getElementById('dealPriority').value;
+            
+            if (!company || !value) return;
+            
+            const card = document.createElement('div');
+            card.className = 'card pipeline-card';
+            card.draggable = true;
+            card.innerHTML = `
+                <div class="company">${company}</div>
+                <div class="deal-value">${value}</div>
+                <div class="card-header">
+                    <span class="card-title">${title || 'New Deal'}</span>
+                    <span class="card-priority priority-${priority}"></span>
+                </div>
+                <div class="card-meta">
+                    <span class="card-tag">New</span>
+                    <span>Contact: ${contact || 'TBD'}</span>
+                </div>
+                <button class="delete-btn" onclick="deleteCard(this)">×</button>
+            `;
+            
+            card.addEventListener('dragstart', dragStart);
+            card.addEventListener('dragend', dragEnd);
+            
+            const containerId = currentColumn + '-cards';
+            document.getElementById(containerId).appendChild(card);
+            
+            closePipelineModal();
+            updateCounts();
+            saveBoard();
+        }
+        
+        function deleteCard(btn) {
+            if (confirm('Delete this item?')) {
+                btn.parentElement.remove();
+                updateCounts();
+                saveBoard();
+            }
+        }
+        
+        // Simple localStorage save/load
+        function saveBoard() {
+            // In a real implementation, this would save to a backend
+            console.log('Board state saved');
+        }
+        
+        // Close modals on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
