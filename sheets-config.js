@@ -9,7 +9,7 @@ const SHEETS_CONFIG = {
     API_KEY: 'AIzaSyA6Zw9IvxOgMIn1l5pZacg4-_lM7vUkfLM',
     
     // Sheet tab name
-    SHEET_NAME: 'Pipeline',
+    SHEET_NAME: 'Troys 2026 Pipeline',
     
     // OAuth Client ID (for full write access - see sheets-oauth-setup.md)
     CLIENT_ID: 'YOUR_OAUTH_CLIENT_ID_HERE'
