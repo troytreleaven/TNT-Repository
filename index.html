@@ -311,19 +311,19 @@
                 </div>
                 <div class="metric-row">
                     <span class="metric-label">Total Pipeline</span>
-                    <span class="metric-value">$480K</span>
+                    <span class="metric-value" id="idx-total-pipeline">$480K</span>
                 </div>
                 <div class="metric-row">
                     <span class="metric-label">Weighted Forecast</span>
-                    <span class="metric-value">$128K</span>
+                    <span class="metric-value" id="idx-weighted-forecast">$128K</span>
                 </div>
                 <div class="metric-row">
                     <span class="metric-label">Collected YTD</span>
-                    <span class="metric-value">$123K</span>
+                    <span class="metric-value" id="idx-collected-ytd">$123K</span>
                 </div>
                 <div class="metric-row">
                     <span class="metric-label">Hot Opportunities</span>
-                    <span class="status-badge status-warning">6 Active</span>
+                    <span class="status-badge status-warning" id="idx-hot-count">6 Active</span>
                 </div>
             </div>
             
@@ -514,6 +514,24 @@
             document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
         }
         updateDate();
+    </script>
+
+    <!-- Live pipeline data from Google Sheets -->
+    <script src="pipeline-loader.js"></script>
+    <script>
+        const fmtIdx = n => {
+            if (n >= 1000000) return '\$' + (n/1000000).toFixed(1) + 'M';
+            if (n >= 1000)    return '\$' + (n/1000).toFixed(n % 1000 === 0 ? 0 : 1) + 'K';
+            return '\$' + n.toLocaleString();
+        };
+        window.onPipelineLoaded(function(data) {
+            const t = data.totals;
+            const el = id => document.getElementById(id);
+            if (el('idx-total-pipeline'))    el('idx-total-pipeline').textContent    = fmtIdx(t.totalPipeline);
+            if (el('idx-weighted-forecast')) el('idx-weighted-forecast').textContent = fmtIdx(t.weightedForecast);
+            if (el('idx-collected-ytd'))     el('idx-collected-ytd').textContent     = fmtIdx(t.collectedYTD);
+            if (el('idx-hot-count'))         el('idx-hot-count').textContent         = t.hotCount + ' Active';
+        });
     </script>
 </body>
 </html>
