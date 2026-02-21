@@ -14,7 +14,7 @@
  * ────────────────────────────────────────────────────────────────────────────
  */
 
-const SHEET_CSV_URL = 'YOUR_PUBLISHED_CSV_URL_HERE';
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRF5tiTOsDlTvIxpb9l6W2RCitSMfFrarlO3l3SOxN-dXPgZclmXtVO-GROQOlXdg/pub?output=csv';
 // Example: 'https://docs.google.com/spreadsheets/d/1Ih4QU2.../pub?gid=0&single=true&output=csv'
 
 // ─── CSV Parser ───────────────────────────────────────────────────────────────
