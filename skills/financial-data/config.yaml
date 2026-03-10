@@ -1,0 +1,38 @@
+# Financial Data Skill Configuration
+
+# Data Source Settings
+data_source: "auto"  # auto, premium, yahoo
+
+# Default output format
+output_format: "text"  # text, json, csv
+
+# Cache settings
+cache_enabled: true
+cache_duration_minutes: 5
+
+# Rate limiting (requests per minute)
+rate_limit: 60
+
+# Default symbols to track (for reports)
+watchlist:
+  - AAPL
+  - MSFT
+  - GOOGL
+  - TSLA
+  - NVDA
+  - BTC
+  - ETH
+
+# API Configuration (if using premium)
+premium_api:
+  base_url: "https://api.financialdatasets.ai"
+  timeout_seconds: 10
+
+# Free alternative (Yahoo Finance)
+yahoo_finance:
+  enabled: true
+  delay_warning: true  # Warn about 15-20min delay
+
+# Logging
+log_level: "INFO"
+log_file: "/data/.openclaw/workspace/skills/financial-data/logs/fetch.log"

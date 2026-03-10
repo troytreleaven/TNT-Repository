@@ -1,0 +1,619 @@
+# MEMORY.md
+
+## 2026-03-03 - System Hardening: Maximum Uptime Safeguards
+
+### CRITICAL: Keep Jarvis Online at All Times
+
+**Troy's Explicit Instruction:** "Put in every safeguard possible. Use cron jobs to keep this thing going."
+
+---
+
+### 🛡️ Active Safeguards (March 3, 2026)
+
+#### 1. Browser Health Check
+- **Job ID:** `68805d35-1ce9-4c3c-97eb-9afdcd61a725`
+- **Frequency:** Every 10 minutes
+- **Action:** Verifies Chromium running on port 18800
+- **Auto-fix:** Restarts browser if down
+- **Script:** `/data/.openclaw/start-browser.sh`
+
+#### 2. Gateway Health Monitor
+- **Job ID:** `0dd41553-da21-4f5f-8ace-8d25f939bea5`
+- **Frequency:** Every 30 minutes
+- **Action:** Checks OpenClaw gateway status
+- **Alert:** Notifies Troy immediately if issues detected
+
+#### 3. Daily Gentle Restart
+- **Job ID:** `c99e71d3-92ee-4a06-bee1-63bb918ff076`
+- **Time:** 4:00 AM EST daily
+- **Purpose:** Prevent memory leaks, refresh system
+- **Action:** Restarts gateway, verifies recovery
+
+#### 4. Full System Health Report
+- **Job ID:** `733bb0ba-b708-4d00-8346-f71539e68864`
+- **Frequency:** Twice daily (9:00 AM, 9:00 PM EST)
+- **Checks:**
+  1. Gateway status
+  2. Telegram connectivity
+  3. Browser (port 18800)
+  4. Email monitoring systems
+  5. Disk space
+- **Report:** Summarizes all system health
+
+#### 5. Email Monitoring Jobs
+- **Troy Email Check:** Every 60 minutes
+- **Alex Chen Email Check:** Every 60 minutes
+- **Amy Reply Check:** Every 10 minutes
+
+---
+
+## 2026-03-06 - Amazon Voice Shopping Canceled
+
+**Troy's Decision:** Amazon Voice Shopping setup has been canceled and removed from the system.
+
+**Action Taken:**
+- ❌ Removed cron job "Amazon Voice Shopping Setup Reminder" (Job ID: 61232fff-eef1-45a6-9e45-6069dc0e7621)
+- ❌ Deleted from MEMORY.md (this note added for record)
+- ❌ Will not pursue further
+
+**Reason:** Troy no longer interested in this feature.
+
+---
+
+### 📂 System Scripts
+
+**Browser Starter:** `/data/.openclaw/start-browser.sh`
+**Full System Startup:** `/data/.openclaw/start-all.sh`
+**Logs:** `/data/.openclaw/logs/startup.log`
+
+---
+
+### 🚨 Incident Report: March 3, 2026
+
+**Problem:** Browser service down from 8:51 AM to 6:03 PM (9+ hours)
+**Root Cause:** Chromium remote debugging not auto-starting
+**Solution Implemented:** Multi-layered health monitoring with auto-restart
+**Status:** ✅ Fully hardened against future outages
+
+---
+
+## 2026-03-03 - Mailing Address Added
+
+**Troy's Mailing Address:**
+```
+31 Governors Road
+Grimsby, Ontario L3M 2Y3
+```
+
+---
+
+## 2026-03-02 - Email System Fully Operational
+
+### Major Milestone: Complete Email Infrastructure
+**All systems tested and working:**
+
+#### Alex Chen Email Account
+- **Address:** alex.chen.gta.dc@gmail.com
+- **Status:** Live and sending/receiving
+- **Monitoring:** Cron job checks every 60 minutes
+- **Auto-alerts:** Troy gets notified of important emails
+
+#### Troy Gmail + Outlook Integration
+- **Gmail:** ttreleaven@gmail.com (monitoring active)
+- **Outlook:** ttreleaven@dalecarnegie.ca (forwarding to Gmail)
+- **Safe Senders:** Configured to prevent junk filtering
+- **Status:** Tested and working perfectly
+
+#### Gmail Signature Created
+```
+Troy Treleaven
+Owner & Managing Partner
+Dale Carnegie Training
+Ontario & The Maritimes
+
+📞 905.928.1034
+📧 ttreleaven@dalecarnegie.ca
+🌐 dalecarnegie.com
+💼 linkedin.com/in/troytreleaven
+```
+
+#### Active Monitoring Cron Jobs
+1. **Troy Email Check** - Every 60 minutes
+2. **Alex Chen Email Check** - Every 60 minutes  
+3. **Amy Reply Check** - Every 10 minutes
+
+#### Fun Testing Moment
+- Sent silly test emails (T-Rex in break room, office plant uprising)
+- Playful exchange with Amy (agoodman464@gmail.com)
+- All systems verified working
+
+**Daily log:** `/data/.openclaw/workspace/memory/2026-03-02.md`
+
+---
+
+## 2026-02-08
+- Configuration finalized: Kimi K2.5 (Main), MiniMax M2.1 (Coding), Gemini 3 Flash (Heartbeat).
+- Brave Search API enabled for research.
+- Scheduled 8:00 AM Daily Spend Report and Hourly Olympics Medal Alerts for Team Canada.
+- System hardened: permissions fixed and world-readable config removed.
+- User requested voice integration (GPT-4o Realtime) and image understanding (Gemini Flash).
+
+## 2026-02-15 - Sales SOP Analysis Complete
+- Analyzed 13 sales transcripts from Fathom recordings (2.5+ MB)
+- Created comprehensive **Sales SOP** from Troy's best practices
+- Key conversations analyzed: Matt Ninomiya (WalterFedy), KF Aero (Jodi & Steve), RHI Magnesita BAC, Lasse Larving (All-Pro.ca)
+- SOP Location: `/data/.openclaw/workspace/SALES_SOP.md`
+
+### Key Sales Techniques Documented:
+1. **Opening:** Relationship-first approach using shared history/connections
+2. **Discovery:** "Lift the hood" philosophy - diagnose before prescribing
+3. **Positioning:** Present options (evening vs Lead with Impact), not one-size-fits-all
+4. **Objection Handling:** Budget, technical-only focus, small team size concerns
+5. **Closing:** Specific dates, collaborative framing, personal connections
+6. **BAC Format:** Group discovery with experience calculation technique
+
+### Sales SOP Core Principles:
+- Listen 70%, talk 30%
+- Be trusted advisor, not vendor
+- Use analogies (ship turning, oscillating fan)
+- Offer 3-person (10% off) and 7-person (pay for 6) price breaks
+- Reference past participants from their company
+
+## Team Updates
+- Lindsey Anslow - REMOVED from team (leaving)
+- Kathy Kaye - Potential addition to instructor development
+
+## 2026-02-17 - Core Directive: Lead Generation & Appointment Booking
+**Troy's explicit instruction:**
+- **Always** find ideas and best practices for outreach and booking appointments
+- **Help drive leads** through the organization to support team hitting $50K/month each
+- **Come with creative ideas spontaneously** (not just when asked)
+- **Research best practices** that actually work (not half-baked theories)
+- **Recommend 2-3 ideas every couple of days**
+- **Focus areas:**
+  - Appointment booking strategies
+  - Lead generation tactics
+  - Creative outreach methods
+  - Organizational workflows that drive leads
+- **Note:** Troy may not act on all ideas, but wants to hear them regularly
+
+**My commitment:**
+- Proactive research (not reactive)
+- Evidence-based recommendations
+- Regular cadence (2-3x per week)
+- Business-specific (Dale Carnegie B2B context)
+
+## 2026-02-21 - Doc Beautifier Skill Created
+
+### New Skill: doc-beautifier
+- **Location:** `/data/.openclaw/workspace/skills/doc-beautifier/`
+- **Purpose:** Transform raw documents into professional Word docs
+- **Features:** Headings, tables, quotes, page breaks, consistent formatting
+
+### IMPORTANT: Always Ask About This Skill
+When receiving ANY document content from Troy, ALWAYS ask:
+> "Want me to run the doc-beautifier skill on this?"
+
+This applies to:
+- Markdown files
+- Chat content meant for external sharing
+- Content that should look professional
+- Word docs that need formatting improvements
+
+### How to Use the Skill
+1. Run: `python3 /data/.openclaw/workspace/skills/doc-beautifier/beautify.py`
+2. Output saves to: `/data/.openclaw/media/outbound/`
+3. Send to Troy via message tool
+
+### Iteration Log (for ongoing improvement)
+- v1.0: Basic conversion with tables, quotes, headings
+- Ideas for v2.0: Cover pages, color themes, auto-detect content type, Dale Carnegie branding
+
+## 2026-03-01 - Financial Data Skill Built
+**New Skill Created:** `financial-data`
+**Location:** `/data/.openclaw/workspace/skills/financial-data/`
+**Status:** ✅ Live and working
+
+### Features:
+- Stock price fetching (real-time via Yahoo Finance)
+- Full company quotes (market cap, P/E, 52-week range, volume)
+- Historical price data
+- Cryptocurrency tracking
+- Company news
+- Comprehensive reports
+
+### Data Sources:
+- **Current:** Yahoo Finance (FREE, 15-20min delay)
+- **Upgrade Option:** Financial Datasets API (~$200/mo for real-time)
+
+### Usage:
+```bash
+python3 skills/financial-data/fetch.py AAPL price
+python3 skills/financial-data/fetch.py TSLA report
+python3 skills/financial-data/fetch.py BTC crypto
+```
+
+### Files Created:
+- `SKILL.md` - Full documentation
+- `fetch.py` - Main script (350+ lines)
+- `formatters.py` - Output formatting
+- `config.yaml` - Configuration
+- `demo.py` - Quick demo
+- `README.md` - Quick start guide
+
+### Use Cases for Dale Carnegie:
+1. Pre-sales research (check prospect stock performance)
+2. Daily market briefings
+3. Content creation (LinkedIn/podcast insights)
+4. Personal investment tracking
+
+### Next Enhancements:
+- Cron job for daily market summary
+- Integration with sales workflows
+- Portfolio tracking
+- Alerts for price movements
+
+## 2026-03-01 - Groq Voice Messaging System Built
+**New Skill Created:** `groq-voice`
+**Location:** `/data/.openclaw/workspace/skills/groq-voice/`
+**Status:** ✅ Live and tested
+**API Key:** Secured in `.env`
+
+### Features:
+- **Ultra-fast inference:** 10x faster than GPUs (300-500ms response time)
+- **Whisper Large v3:** Speech-to-text transcription
+- **Llama 3.3 70B:** Conversational AI with Alex Chen persona
+- **Interactive chat:** Text-based conversations ready
+- **Dale Carnegie trained:** Alex Chen persona with company knowledge
+
+### Usage:
+```bash
+python3 skills/groq-voice/voice_chat.py --mode demo
+python3 skills/groq-voice/voice_chat.py --mode conversation
+```
+
+### Integration Pipeline:
+1. Voice call comes in → Audio captured
+2. Whisper transcribes → Text
+3. Llama generates response (Alex Chen persona)
+4. ElevenLabs TTS → Voice back to caller
+5. Trello logs conversation
+
+### Performance:
+- 30 requests/minute
+- 6,000 tokens/minute
+- 99 languages supported via Whisper
+
+## 2026-03-02 - Troy Treleaven Email Monitoring System Built
+**Email:** `ttreleaven@gmail.com`  
+**Status:** ✅ Fully operational with draft response system
+
+### Email Monitoring Skill
+**Location:** `/data/.openclaw/workspace/skills/troy-email/`  
+**Features:**
+- ✅ Monitor primary inbox for unread emails
+- ✅ Auto-generate draft responses (as Troy or Virtual Assistant)
+- ✅ Smart email type detection (inquiry, scheduling, follow-up, thank you)
+- ✅ Professional Dale Carnegie signatures
+- ✅ Wait for approval before sending
+
+### Response Options:
+1. **Respond as Troy** - Full signature, [TROY TO ADD] placeholders
+2. **Respond as Virtual Assistant (Jarvis)** - Acknowledgment + confidentiality notice
+
+### Virtual Assistant Signature:
+```
+Jarvis | Virtual Assistant to Troy Treleaven
+Dale Carnegie Training - Greater Toronto Area & Maritimes
+
+📧 All communications with Troy are private and confidential.
+⚡ Troy is currently working with customers and will respond promptly.
+
+📞 905.928.1034
+🌐 www.dalecarnegie.com/en/locations/greater-toronto-area-south-central-ontario
+```
+
+### Email Monitoring:
+**Check frequency:** Every 60 minutes  
+**Alert on:** New unread emails  
+**Auto-send:** Disabled (requires Troy's approval)
+
+### Usage:
+```bash
+# Test connection
+python3 skills/troy-email/troy_email.py test
+
+# Check for new emails (shows drafts)
+python3 skills/troy-email/troy_email.py check
+
+# Send email
+python3 skills/troy-email/troy_email.py send recipient@example.com "Subject"
+```
+
+---
+
+## 2026-03-01 - Alex Chen Gmail Account Created
+**Email:** `alex.chen.gta.dc@gmail.com`  
+**Name:** Alex Chen  
+**Birthday:** March 15, 1992  
+**Status:** ✅ **FULLY OPERATIONAL**
+
+### Credentials Location:
+`/data/.openclaw/workspace/skills/groq-voice/.env`
+
+### Email Automation Skill
+**Location:** `/data/.openclaw/workspace/skills/alex-chen-email/`  
+**Features:**
+- ✅ Send emails as Alex Chen (SMTP)
+- ✅ Read inbox (IMAP)
+- ✅ Auto-reply templates (Dale Carnegie inquiries)
+- ✅ Email monitoring every 30 minutes
+
+### Usage:
+```bash
+# Test connection
+python3 skills/alex-chen-email/email_client.py test
+
+# Read inbox
+python3 skills/alex-chen-email/email_client.py read
+
+# Send auto-reply
+python3 skills/alex-chen-email/email_client.py auto-reply prospect@company.com "Name"
+```
+
+### Email Monitoring
+**Check frequency:** Every 30 minutes via cron job  
+**Alert on:** New unread emails  
+**Auto-actions:** None (manual approval for all sends)
+
+### Next Enhancements:
+- 🔜 Google Calendar integration
+- 🔜 Google Drive access
+- 🔜 Auto-responders for common inquiries
+- 🔜 CRM integration (log emails to Salesforce)
+
+### Persona Guidelines:
+Alex Chen is the Dale Carnegie GTA Operations Coordinator:
+- **Tone:** Professional but warm, consultative not salesy
+- **Role:** Scheduling, inquiries, program information
+- **Programs:** DCC (8-week), Leadership Boot Camp (3-day), HIP (2-day)
+- **Locations:** Toronto, Mississauga, Burlington, Kitchener, Niagara
+
+---
+
+## 2026-03-01 - "The Conductor" YouTube Video
+**Saved Reference:** YouTube Short titled "The Conductor"
+**URL:** https://youtube.com/shorts/Wfm-VzQIQsI?si=mYcu9RDYuH9tNfXd
+**Status:** Saved for future reference/ideas
+**Context:** Troy shared this video and requested it be saved in memory as "the conductor" — likely leadership/orchestra analogy content relevant to Dale Carnegie training themes.
+
+## 2026-02-21 - MiniMax Coding Plan Details
+
+**Full documentation:** https://platform.minimax.io/docs/llms.txt
+
+### Key Points (explain when asked):
+- **Supported models:** MiniMax-M2.5, MiniMax-M2.1, MiniMax-M2 (and M2.5-highspeed with High-Speed subscription)
+- **Switching models:** Change the `model` parameter in API calls - all share same quota/billing
+- **Usage check:** https://platform.minimax.io/user-center/payment/coding-plan
+- **Reset mechanism:** Dynamic 5-hour window - usage from >5 hours ago automatically releases
+- **Why "1 prompt ≈ 15 model calls":** Single user action may trigger multiple backend interactions (context fetch, suggestions, refinements) - bundled as 1 prompt for simplified billing
+- **API Key difference:** Coding Plan key ≠ standard Open Platform key - they cannot be used interchangeably
+  - Coding Plan key: Measures in "prompts", subject to 5-hour limit
+  - Standard key: Measures in tokens, depletes account balance
+- **TPS (Tokens Per Second):** Formula: output tokens ÷ (time of last token - time of first token)
+
+## 2026-02-21 - Netlify Account
+
+**Status:** Connected to GitHub for auto-deploys
+**Note:** Minimize terminal usage - prefer CLI-less deployments
+
+## 2026-02-21 - Team Updates
+
+### Removed
+- Lindsey Anslow - No longer on team (instructors list and goals)
+
+### Added
+- Vin - Marketing (GTM team, Philippines)
+
+## 2026-03-01 - SearxNG Self-Hosted Search Engine Installed (DEFAULT)
+**New Skill Created:** `searxng`
+**Location:** `/data/.openclaw/workspace/skills/searxng/`
+**Status:** ✅ Live and running on port 8888
+**Role:** 🔥 DEFAULT SEARCH ENGINE for all OpenClaw queries (replaces Brave)
+
+### What is SearxNG?
+Privacy-respecting, self-hosted metasearch engine that aggregates results from 70+ search services (Google, Brave, DuckDuckGo, Bing, Wikipedia, etc.)
+
+### Benefits over Brave API:
+- ✅ **Self-hosted** - Searches stay local
+- ✅ **Unlimited** - No API quotas or costs
+- ✅ **Multiple engines** - Aggregates 70+ sources
+- ✅ **No tracking** - Privacy by design
+- ✅ **Free** - Zero ongoing costs
+- ✅ **Default** - All OpenClaw queries now use SearxNG
+
+### Installation:
+- Cloned from: https://github.com/searxng/searxng
+- Location: `/data/.openclaw/searxng/`
+- Port: 8888 (localhost only)
+- Instance name: "OpenClaw Search"
+
+### Usage:
+```bash
+# Command line
+python3 skills/searxng/searxng_search.py "Dale Carnegie" general 10
+
+# Web interface
+http://127.0.0.1:8888
+
+# Python - Default search (replaces web_search)
+from skills.searxng.default_search import web_search
+results = web_search("leadership training", count=10)
+```
+
+### Default Search Adapter:
+- **File:** `skills/searxng/default_search.py`
+- **Function:** `web_search()` - Drop-in replacement for Brave
+- **Compatible:** Same API as original `web_search` tool
+- **Automatic:** All skills now use SearxNG by default
+
+### Business Use Cases:
+1. **Prospect research** - Unlimited company/executive searches
+2. **Content research** - Leadership articles, training materials
+3. **Competitive intel** - Track competitors
+4. **News monitoring** - Industry trends without limits
+5. **Cost savings** - No more Brave API fees
+
+## 2026-02-22 - Cron Job Telegram Delivery Fix
+
+### Problem
+Cron jobs with `sessionTarget: "isolated"` and `delivery: {mode: "announce"}` were failing to deliver messages to Telegram, even though they reported "ok" status. Errors: "Unknown target 'troy'" and "chat not found."
+
+### Root Cause
+Isolated cron sessions don't have access to the user's session context. The "announce" delivery mode doesn't work reliably.
+
+### Solution
+All user-facing cron jobs must use:
+- `sessionTarget: "main"` (delivers to the main session where user is)
+- `payload.kind: "systemEvent"` (injects as system event)
+- No `delivery` config needed (main session auto-routes to Telegram)
+
+### Fixed Cron Jobs
+- Daily Dad Joke ✅
+- Daily File Review ✅
+- Daily Check-in - 12-Week Targets ✅
+- Mid-Week Progress Review ✅
+
+### Best Practice
+When creating NEW cron jobs that need to message Troy:
+```json
+{
+  "sessionTarget": "main",
+  "payload": {
+    "kind": "systemEvent",
+    "text": "Your message here"
+  }
+}
+```
+
+DO NOT use `sessionTarget: "isolated"` with `delivery` for user notifications - it doesn't work.
+
+---
+
+## 2026-03-04 - Tomorrow's Priorities (March 4, 2026)
+
+### Voice Call System - URGENT
+**Goal:** Complete Twilio voice call setup and make first real phone call
+**Status:** Credentials configured, error persists
+**Next Steps:**
+1. Debug "Maximum concurrent calls (1) reached" error
+2. Test actual phone call to 905-928-1034
+3. Verify two-way conversation works
+
+**Troy's Cell:** 905-928-1034
+**Twilio Number:** +19185582260
+**Config Location:** `/data/.openclaw/openclaw.json`
+
+### Active Tasks Waiting
+1. **Alex Chen Reply** - Waiting for:
+   - Daily work report
+   - 5 business improvement ideas
+
+2. **Boyd Automotive Follow-up** - Dave Heidebrecht identified:
+   - Consider reaching out for Dale Carnegie training
+
+3. **Expense Tracking** - System active:
+   - Next compilation: Saturday, March 7, 9:00 AM
+
+### Voice/TTS Features Active
+- **Voice Messages:** Working perfectly via Telegram
+- **Trigger:** "voice reply", "use TTS", "speak this"
+- **Technology:** OpenAI TTS (gpt-4o-mini-tts, alloy voice)
+
+### Key Reminders for Tomorrow
+- Voice call system needs completion
+- Check Alex Chen's email for his response
+- Review expense receipts if any new ones come in
+- Morning briefing at 7:45 AM (cron job)
+
+---
+
+**Troy's Instruction:** "Build this memory strong so we don't forget things and stay consistent."
+
+## 2026-03-08 - YouTube Video Links for Review
+
+### Video 1: https://youtube.com/shorts/B6RcG9zTwaQ
+- Source: Troy shared via Telegram
+- Status: Awaiting transcript (tools limited)
+- Action needed: Review when tools available
+
+### Video 2: https://youtu.be/vP4xn5653Y
+- Source: Troy shared via Telegram
+- Status: Awaiting transcript (tools limited)
+- Action needed: Review when tools available
+
+
+### Video 3: https://youtube.com/shorts/HpB7K5HiMQU
+- Source: Troy shared via Telegram
+- Status: Pending transcription attempt
+- Action needed: Extract content if possible
+
+
+## 2026-03-08 - Major Progress Day
+
+### GOOGLE WORKSPACE INTEGRATION COMPLETE
+- ✅ gws CLI installed and authenticated on Troy's machine
+- ✅ Service account created: openclaw-service@openclaw-places-486818.iam.gserviceaccount.com
+- ✅ Calendar access working - can create/manage events
+- ✅ 201 old spam emails deleted from Gmail (pre-2023)
+- ✅ Meeting with Andrea created: March 9, 2026, 9:00 AM
+- ⚠️ Drive uploads need shared folder setup
+- ⚠️ Full Gmail access needs OAuth (service account limitation)
+
+### STRETCH CAMP FEASIBILITY STUDY
+- ✅ Market research report completed
+- ✅ Financial analysis completed
+- 📊 Key findings: $250 pricing viable, 40 attendees = $10K revenue, break-even at ~27
+- 📍 Mississauga recommended as pilot location
+- 📁 Reports saved in workspace
+
+### YOUTUBE TRANSCRIPTION SKILL
+- ✅ Created youtube-transcribe skill at /data/.openclaw/workspace/skills/youtube-transcribe/
+- ✅ Uses youtube-transcript-api
+- ⚠️ Limited by YouTube IP blocking on cloud servers
+- 📹 Saved 3 video links for later review
+
+### INFLUENCE BOOT CAMP RESEARCH COMPLETE
+**6-Agent Analysis Results:**
+- ✅ Market: $22.8B proven category, gap identified at $995-1,495 price point
+- ✅ Buyers: L&D Directors/VPs (B2B, not individuals)
+- ✅ Curriculum: One-day CAN work with pre-work + max 20 people
+- ✅ Financials: Break-even at 24 attendees @ $500, corporate contracts = $5K profit
+- ✅ Competition: White space - no one serves shared services specifically
+- ⚠️ Launch: 2 weeks only with existing network, else 4-6 weeks
+- 💰 Investment needed: $25K upfront
+
+**Verdict: CONDITIONAL GO** - Viable if executed as B2B to L&D leaders
+
+### OVERARCHING GOAL
+**Target: $300,000/month in total sales** from all Dale Carnegie offerings
+- DCC courses
+- Lead with Impact
+- Leadership training
+- High Impact Presentations
+- Winning with Relationship Selling
+- In-house corporate business
+- (Potential) Influence Boot Camp
+
+### STRATEGIC DECISION PENDING
+Compare:
+1. General business boot camp (original Stretch Camp concept)
+2. Influence Boot Camp (shared services focus)
+
+Criteria:
+- Serve existing/past Dale Carnegie clients
+- Generate summer revenue
+- Feed high-ticket offerings
+- Open corporate doors
+- Minimal disruption to core business
+

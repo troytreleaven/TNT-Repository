@@ -1,0 +1,15 @@
+{
+  "auth": {
+    "profiles": {
+      "google-drive:service-account": {
+        "mode": "service_account",
+        "provider": "google",
+        "project_id": "openclaw-places-486818",
+        "private_key_id": "531a80a222cdfb69429d3001e3e9d25734d5caea",
+        "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+ljXikAEu5ESK\nRlAicWOg2CyKjxfQdWIWhwzsCIoQyrUtbKB92ewcKIbk2F7tuM7khoNSy6zCMAEY\nPLI7LGtyUw4XgtiHQkl263avVHBT6o75PlYdv9a99T/7IavXMD/1eAZLDkvTEupO\nZKE2lKJHZ94LDcCn1UjIWFCStGWk+BIpHL2/VQeXsLN6/2VeREgj/GHOwuMO5zEk\nbLdJ3xYkYJvo9a3h2YuFEa/4OY6B8IcjnipHM/Wcbc18UDnjaGAYYmwRln+v5xJh\nc8ZRV/OQJqlV+cG1+cMArH7RFLTsBBNesbwcLOLBjysw4r1cYApF4YSkmdVnemaM\nCYLT1QVzAgMBAAECggEABK3ZatOQQ99001RAmWfhQ0yrY0d6FTMckmMEbTMUeK8R\nXakiE5TrGBHipfGt+vYjlja7OKgpeKcHD9pFofBIPwlM+kTLHh8BgLrtMgbHrze+\nBN6D7L0N/6HqzTaZanITz+n/dY5HTEpVmFEeKCHkDg69w9W1milBXTHV4JQvPqqR\npQSYkR3pXYR82jcKD8nSxmg3GAsX9ptMav8KBqkylg22PHY2HhhhKOBkxobj00js\n33rLKYH0mfgf2OYS52/Yl5xVrGKoC0MFFoZMJWdWH/tFscsGTafoNuRKgn69ZTGN\ngzQatT57iMQ0Qp0lyEdQwuE8Fkswev0KVwZSekm3IQKBgQDlWCI97jPbAN5RkOr1\nCUxTiovF/qgR8dHEyNNmUW633Z/dEYZcNjlIdnsgRKsyNSWul9F3LIkyBtNKjQZb\n02hteuj3J90uE021uryH/KzpvP6qqthA/gC8sAidOEcVWR0fzNbsMLadMtAXT21L\nPDAb0Vkpx/n4S1xuWTXS5dG6QwKBgQDUvOSb3XayK0pJ79MpZgLYFTmjP+z+WN2S\n0Hfmk7Cbfeo5zVcK+p9ESgFgTPyQdWdhT968SMnuZUd84pKcHJvdsx/V2jz9TI8f\noJvFTKLXBQ1RExI2oGRIN2vP+GK44dOWX3q6ESO7QXaFgrn1AFnFDowFBSb61Yz4\n+9SP2kDNEQKBgQCYwGS+HuNG4IMyjHURk4nUsph53S0QFqICkUfMBDzcFa6eTUfS\nLwNkMhW73kCwBhn8+X04BN+0BDvCkb9EdcA9+vkjdNeqEo1VlvRvFmoMnCZ6gaPb\nVdIj2pNCM/OUUnBFd+dGFQPsG6XhgLNowsPAI2VhoKHrMDZ2ANEKkKtphQKBgG+k\nZbCqa3UbJNRiaIWsREfT87iJfr0IM9etUY8O6LrhPH9zFH/tgJGc6NX58P16r3Mx\nMCnNZTOXsQmH+fq1RNL3Avj+m80uVVn6tmS3UCnZO+DVSlSinZ4Mf6bXqi9uS9T5\nbHWjMwY9V46/SQmbUoEInlCwIIG4ek/cEPQhTKqRAoGAJ6AkwYQkBsGLxDbnlcfN\nprcsM3XQgoFg54jjy8JHR0v5eGBP6XBQDvKgzxp7es+eOiqC2KDBp2lb6cwn4clW\nd5PrU88U/uZ5S6j6qcx7a1Mktv+x93guLbVJZqKWbGi0KPOYWtUFe30jS17gDOhP\nmzuiTF9EQD9iK5ZcHNQ/Mso=\n-----END PRIVATE KEY-----",
+        "client_email": "open-claw@openclaw-places-486818.iam.gserviceaccount.com",
+        "client_id": "115704953567917038542"
+      }
+    }
+  }
+}

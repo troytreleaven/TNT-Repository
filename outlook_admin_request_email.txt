@@ -1,0 +1,28 @@
+Subject: Request: App Password for Email Integration
+
+Hi [Admin Name],
+
+I'm working on automating some of my email workflows to be more efficient with customer follow-ups and scheduling. To do this, I need to connect my Dale Carnegie email account (ttreleaven@dalecarnegie.ca) to an automation tool.
+
+**What I'm requesting:**
+An "app password" for my Outlook account that will allow secure IMAP/SMTP access for automation purposes.
+
+**Why:**
+This will help me:
+- Automatically draft responses to common inquiries
+- Set up smart notifications for important emails
+- Reduce time spent on email management
+
+**What an app password is:**
+It's a special 16-character password (different from my regular password) that allows secure access for automation tools without needing multi-factor authentication each time. It's a standard Microsoft 365 feature.
+
+**What you would need to do:**
+If our organization allows app passwords, you could either:
+1. Enable app passwords for my account so I can create one myself, OR
+2. Create an app password on my behalf and send it to me
+
+If our security policy doesn't allow app passwords, I understand — just let me know and I'll explore other options.
+
+Thanks for your help!
+
+Troy

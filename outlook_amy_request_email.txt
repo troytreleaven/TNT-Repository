@@ -1,0 +1,14 @@
+Subject: Quick question about email automation
+
+Hey Amy,
+
+Quick question — I'm trying to set up some email automation to help me stay on top of customer inquiries and scheduling (basically have Jarvis help monitor and draft responses).
+
+To do this, I need something called an "app password" for my Dale Carnegie email (ttreleaven@dalecarnegie.ca). It's a special password that lets automation tools connect to Outlook.
+
+I'm not sure if you can do this or not, but do you know if you can? Or if it's even possible with our setup?
+
+If it's a pain or not allowed, no worries — I'll figure out another way. Just thought I'd ask!
+
+Thanks!
+Troy

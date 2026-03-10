@@ -1,0 +1,26 @@
+To: ttreleaven@gmail.com
+Subject: GitHub Account Setup Steps for Alex
+
+Hi Troy,
+
+Here are the steps for Alex to set up his GitHub account:
+
+**GitHub Sign-Up Steps:**
+
+1. Go to github.com
+2. Click "Sign up"
+3. Enter email: alex.chen.gta.dc@gmail.com
+4. Create a password
+5. Choose a username (e.g., "alexchen-dc" or "alexchen-gta")
+6. Verify email address
+7. Complete the setup
+
+**For Dale Carnegie GTA work, Alex can:**
+- Access repositories we create
+- Collaborate on projects
+- Use GitHub Copilot for coding help
+
+Let me know if you need anything else!
+
+Best,
+Jarvis

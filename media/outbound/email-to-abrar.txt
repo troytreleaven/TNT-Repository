@@ -1,0 +1,32 @@
+Subject: Azure App Credentials - Microsoft 365 Integration
+
+Hi Abrar,
+
+Hope you're doing well! I'm following up on the Azure app credentials you provided for our Microsoft 365 integration.
+
+App details:
+- Client ID: 7cad688e-6060-4d3b-8e9d-eb524fe8fb41
+- Tenant ID: d7430b7e-2c37-4d90-a386-42bdff6e9c5c
+- Client Secret: (provided previously)
+
+I'm getting an "Invalid client secret" error when testing the connection. Could you please:
+
+1. Check if the client secret is still valid in Azure
+2. If needed, generate a new client secret and send me the VALUE (not the ID)
+
+You can find this in Azure Portal → Microsoft Entra ID → App registrations → Select the app → Certificates & secrets
+
+Thanks for your help!
+
+Best,
+Troy
+
+---
+Troy Treleaven
+Owner & Managing Partner
+Dale Carnegie Training
+Ontario & The Maritimes
+
+📞 905.928.1034
+📧 ttreleaven@dalecarnegie.ca
+🌐 dalecarnegie.com

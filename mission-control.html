@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - Quick Access</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: #d4af37;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .button {
+            display: inline-block;
+            background: #d4af37;
+            color: #1a1a2e;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .button.secondary {
+            background: transparent;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .feature {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #1a472a;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        code {
+            background: rgba(0,0,0,0.3);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status">
+            <span class="status-dot"></span>
+            <span>Task Board Ready</span>
+        </div>
+        
+        <h1>🎯 Mission Control</h1>
+        <p class="subtitle">Task Management for Troy Treleaven</p>
+        
+        <div class="card">
+            <h2>🚀 Quick Access</h2>
+            <p>The Mission Control Task Board is ready to use!</p>
+            
+            <div style="margin: 1.5rem 0;">
+                <a href="mission-control-live/index.html" class="button">Open Task Board</a>
+                <a href="DEPLOYMENT_GUIDE.md" class="button secondary">View Guide</a>
+            </div>
+            
+            <p style="opacity: 0.7; font-size: 0.9rem;">
+                The task board works in your browser with local storage.<br>
+                Data persists between sessions.
+            </p>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">📋</div>
+                <h3>Kanban Board</h3>
+                <p>4 columns: Backlog, In Progress, Review, Done</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">✏️</div>
+                <h3>Create & Edit</h3>
+                <p>Add tasks with title, description, priority, due date</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔄</div>
+                <h3>Drag & Drop</h3>
+                <p>Move tasks between columns easily</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">👥</div>
+                <h3>Assignees</h3>
+                <p>Assign to Troy or Jarvis</p>
+            </div>
+        </div>
+        
+        <div class="card" style="margin-top: 2rem;">
+            <h3>🌐 Netlify Deployment</h3>
+            <p>To deploy to a live URL:</p>
+            <ol style="text-align: left; display: inline-block;">
+                <li>Go to <a href="https://app.netlify.com/drop" style="color: #d4af37;">app.netlify.com/drop</a></li>
+                <li>Drag the <code>mission-control-live</code> folder</li>
+                <li>Get your live URL instantly!</li>
+            </ol>
+        </div>
+        
+        <p style="margin-top: 2rem; opacity: 0.5; font-size: 0.8rem;">
+            Built by Jarvis • Delivered Feb 19, 2026 • OpenClaw Instance
+        </p>
+    </div>
+</body>
+</html>

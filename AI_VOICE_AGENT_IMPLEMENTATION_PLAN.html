@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Voice Agent Implementation Plan</title>
+    <style>
+        @page { size: letter; margin: 1in; }
+        @media print {
+            body { font-size: 11pt; line-height: 1.4; }
+            .page-break { page-break-before: always; }
+            h1 { font-size: 18pt; }
+            h2 { font-size: 14pt; }
+            h3 { font-size: 12pt; }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 1in;
+            font-size: 11pt;
+        }
+        h1 {
+            color: #1a365d;
+            border-bottom: 3px solid #3182ce;
+            padding-bottom: 0.3em;
+            font-size: 20pt;
+            margin-top: 0;
+        }
+        h2 {
+            color: #2c5282;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.2em;
+            margin-top: 1.5em;
+            font-size: 14pt;
+        }
+        h3 {
+            color: #2d3748;
+            font-size: 12pt;
+            margin-top: 1.2em;
+        }
+        h4 {
+            color: #4a5568;
+            font-size: 11pt;
+            margin-top: 1em;
+        }
+        .subtitle {
+            color: #718096;
+            font-size: 12pt;
+            margin-bottom: 2em;
+        }
+        .meta {
+            background: #f7fafc;
+            border-left: 4px solid #3182ce;
+            padding: 1em;
+            margin: 1em 0;
+        }
+        code {
+            background: #edf2f7;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.85em;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1em 0;
+            font-size: 10pt;
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 0.5em;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+            font-weight: 600;
+        }
+        ul, ol {
+            padding-left: 1.5em;
+        }
+        li {
+            margin: 0.3em 0;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        .toc {
+            background: #f7fafc;
+            padding: 1em 1.5em;
+            border-radius: 5px;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .toc li {
+            padding: 0.2em 0;
+        }
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            color: #3182ce;
+            font-weight: bold;
+        }
+        .important {
+            background: #fed7d7;
+            border-left: 4px solid #e53e3e;
+            padding: 1em;
+            margin: 1em 0;
+        }
+        blockquote {
+            border-left: 4px solid #cbd5e0;
+            padding-left: 1em;
+            color: #4a5568;
+            font-style: italic;
+            margin: 1em 0;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 2em 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI Voice Agent Implementation Plan</h1>
+    <p class="subtitle">ElevenLabs + Twilio + OpenClaw for Appointment Booking</p>
+    
+    <div class="meta">
+        <strong>Document Version:</strong> 1.0<br>
+        <strong>Created:</strong> February 13, 2026<br>
+        <strong>Purpose:</strong> Deploy AI voice agent to book appointments and make reservations
+    </div>
+
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li>1. Executive Summary</li>
+            <li>2. Architecture Overview</li>
+            <li>3. Account Setup</li>
+            <li>4. ElevenLabs Configuration</li>
+            <li>5. Twilio Configuration</li>
+            <li>6. OpenClaw Integration</li>
+            <li>7. AI Agent Prompts</li>
+            <li>8. Testing Protocol</li>
+            <li>9. Deployment Checklist</li>
+            <li>10. Cost Analysis</li>
+            <li>11. Legal Compliance</li>
+            <li>12. Troubleshooting</li>
+            <li>13. Future Enhancements</li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h2>1. Executive Summary</h2>
+    <p>This plan outlines the deployment of an AI voice agent capable of:</p>
+    <ul>
+        <li>Answering inbound calls professionally</li>
+        <li>Understanding caller intent</li>
+        <li>Booking appointments on your calendar</li>
+        <li>Making reservations at restaurants/venues</li>
+        <li>Qualifying leads for your Dale Carnegie business</li>
+        <li>Handing off to human when needed</li>
+    </ul>
+
+    <p><strong>Target Use Cases:</strong></p>
+    <ul>
+        <li>Inbound lead qualification</li>
+        <li>Appointment booking for consultations</li>
+        <li>Follow-up call automation</li>
+        <li>Reservation making for client meetings</li>
+    </ul>
+
+    <h2>2. Architecture Overview</h2>
+    <p>The system architecture consists of:</p>
+    <ul>
+        <li><strong>Twilio:</strong> Phone number (+1 905-XXX-XXXX), Voice Webhook, Call Recording (optional)</li>
+        <li><strong>ElevenLabs Conversational AI:</strong> Voice Agent (custom persona), Natural Language Understanding, Real-time Response Generation</li>
+        <li><strong>OpenClaw:</strong> Brain for agent logic, Calendar integration, Booking management, CRM logging</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h2>3. Account Setup</h2>
+    
+    <h3>3.1 Twilio Account Creation</h3>
+    <h4>Step 1: Sign Up</h4>
+    <ol>
+        <li>Go to https://www.twilio.com/try-twilio</li>
+        <li>Sign up with email (use business email)</li>
+        <li>Verify email address</li>
+        <li>Complete profile setup</li>
+    </ol>
+
+    <h4>Step 2: Configure Phone Number</h4>
+    <ol>
+        <li>Navigate to <strong>Phone Numbers</strong> → <strong>Manage</strong> → <strong>Buy a Number</strong></li>
+        <li>Search for Canadian number (+1 country code)</li>
+        <li>Select number (prefer local 905 area code)</li>
+        <li>Purchase (~$1.50/month)</li>
+    </ol>
+
+    <h4>Step 3: Get Credentials</h4>
+    <p>Required for OpenClaw:</p>
+    <ul>
+        <li><strong>Account SID:</strong> ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</li>
+        <li><strong>Auth Token:</strong> [hidden - get from console]</li>
+        <li><strong>Phone Number:</strong> +1 905 XXX XXXX</li>
+    </ul>
+
+    <h4>Step 4: Configure Voice Webhook</h4>
+    <ol>
+        <li>Click your purchased number</li>
+        <li>Scroll to <strong>Voice &amp; Fax</strong> section</li>
+        <li>Under "A Call Comes In" select <strong>Webhook</strong></li>
+        <li>Enter URL: <code>https://your-server.com/voice/webhook</code></li>
+        <li>Save</li>
+    </ol>
+
+    <h3>3.2 ElevenLabs Account Creation</h3>
+    <h4>Step 1: Sign Up</h4>
+    <ol>
+        <li>Go to https://elevenlabs.io</li>
+        <li>Click <strong>Start for Free</strong> or <strong>Sign Up</strong></li>
+        <li>Sign up with Google or email</li>
+    </ol>
+
+    <h4>Step 2: Select Plan</h4>
+    <ul>
+        <li><strong>Creator:</strong> $5/month (includes 100 min)</li>
+        <li><strong>Pro:</strong> $33/month (includes 500 min)</li>
+        <li><strong>Scale:</strong> Custom (for high volume)</li>
+    </ul>
+
+    <h4>Step 3: Get API Key</h4>
+    <ol>
+        <li>Navigate to <strong>Profile</strong> → <strong>API Key</strong></li>
+        <li>Copy your API key</li>
+        <li>Save securely</li>
+    </ol>
+
+    <h4>Step 4: Create Conversational Agent</h4>
+    <ol>
+        <li>Go to <strong>Agents</strong> → <strong>Create New Agent</strong></li>
+        <li>Configure:
+            <ul>
+                <li><strong>Name:</strong> "Troy's Booking Assistant"</li>
+                <li><strong>Voice:</strong> Select from library (recommend: "Adam" or "Sarah")</li>
+                <li><strong>Language:</strong> English (North American)</li>
+            </ul>
+        </li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <h2>4. ElevenLabs Configuration</h2>
+    
+    <h3>4.1 Agent Settings</h3>
+    <p>Navigate to your agent's <strong>Settings</strong> tab:</p>
+    <table>
+        <tr><th>Setting</th><th>Value</th></tr>
+        <tr><td>Name</td><td>Troy's Booking Assistant</td></tr>
+        <tr><td>Language</td><td>English (US)</td></tr>
+        <tr><td>Voice</td><td>Adam (recommended)</td></tr>
+        <tr><td>Stability</td><td>0.75</td></tr>
+        <tr><td>Clarity</td><td>0.85</td></tr>
+        <tr><td>Similarity</td><td>0.80</td></tr>
+        <tr><td>Latency</td><td>0 (optimize for real-time)</td></tr>
+    </table>
+
+    <h3>4.2 Voice Settings</h3>
+    <p><strong>Recommended Voice:</strong> Adam (deep, professional male)<br>
+    <strong>Alternative:</strong> Sarah (warm, professional female)</p>
+    
+    <h3>4.3 Twilio Integration</h3>
+    <ol>
+        <li>In ElevenLabs agent, go to <strong>Integrations</strong></li>
+        <li>Click <strong>Add Integration</strong> → <strong>Twilio</strong></li>
+        <li>Enter Account SID, Auth Token, and Phone Number</li>
+        <li>Save</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <h2>5. Twilio Configuration</h2>
+    
+    <h3>5.1 Phone Number Settings</h3>
+    <p>Navigate to your number and configure:</p>
+    <table>
+        <tr><th>Setting</th><th>Value</th></tr>
+        <tr><td>Accept Calls</td><td>Enabled</td></tr>
+        <tr><td>Call Recording</td><td>Disabled (optional)</td></tr>
+        <tr><td>Status Callback</td><td>[leave blank]</td></tr>
+        <tr><td>Voice Webhook URL</td><td>https://your-domain.com/voice</td></tr>
+        <tr><td>Method</td><td>POST</td></tr>
+    </table>
+
+    <h3>5.2 Usage Alerts</h3>
+    <p>Set up budget alerts:</p>
+    <ol>
+        <li>Go to <strong>Usage</strong> → <strong>Alerts</strong></li>
+        <li>Create alert at $20/month</li>
+        <li>Create alert at $50/month</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <h2>6. OpenClaw Integration</h2>
+    
+    <h3>6.1 Update Configuration</h3>
+    <p>Add to your <code>openclaw.json</code>:</p>
+    <pre>{
+  "plugins": {
+    "entries": {
+      "voice-call": {
+        "enabled": true,
+        "config": {
+          "provider": "twilio",
+          "fromNumber": "+1905XXXXXXX",
+          "twilio": {
+            "accountSid": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "authToken": "[YOUR_AUTH_TOKEN]"
+          },
+          "webhook": {
+            "server": {
+              "port": 3334,
+              "path": "/voice/webhook"
+            }
+          },
+          "outbound": {
+            "defaultMode": "conversation"
+          },
+          "streaming": {
+            "enabled": true
+          }
+        }
+      }
+    }
+  }
+}</pre>
+
+    <h3>6.2 Voice-Call Skill Commands</h3>
+    <p>Once configured, you'll be able to use these commands:</p>
+    <pre># Make an outbound call
+voice-call --to "+1234567890" --message "Hi, this is Troy's office..."
+
+# Start a conversation mode call
+voice-call --to "+1234567890" --mode conversation
+
+# Check call status
+voice-call --status callSid</pre>
+
+    <div class="page-break"></div>
+
+    <h2>7. AI Agent Prompts</h2>
+    
+    <h3>7.1 Primary Booking Agent Prompt</h3>
+    <p>Copy this into your ElevenLabs agent's <strong>Prompt</strong> section:</p>
+    <blockquote>
+You are Troy's Booking Assistant at Dale Carnegie Training.
+Your role is to professionally handle inbound calls, understand caller needs,
+and book appointments or make reservations on Troy's behalf.
+
+PERSONALITY:
+- Professional, warm, and helpful
+- Speak clearly and concisely
+- Show genuine interest in the caller
+- Never sound robotic or scripted
+
+CORE RESPONSIBILITIES:
+
+1. GREETING
+   "Hello, thank you for calling Dale Carnegie Training. This is [Your Name].
+    How may I assist you today?"
+
+2. QUALIFY THE CALLER
+   Ask questions to understand:
+   - What brings them to Dale Carnegie?
+   - Are they looking for leadership training?
+   - Is this for themselves or their team?
+   - What's their timeline?
+
+3. BOOKING APPOINTMENTS
+   When caller wants to book:
+   - "I'd be happy to schedule a consultation for you."
+   - "What times work best for you? I have availability on [offer slots]."
+   - Get: Name, phone, email, preferred time, reason for interest
+
+4. MAKING RESERVATIONS
+   When Troy needs a restaurant reservation:
+   - "Let me book a table for your meeting."
+   - Get: Date, time, party size, location preference, dietary restrictions
+
+5. TRANSFER TO HUMAN
+   If caller needs Troy directly:
+   "I can certainly help you. Let me transfer you to Troy's line.
+    Please hold for a moment."
+   [Transfer or take message]
+
+6. CLOSING
+   "Thank you for calling Dale Carnegie Training. Is there anything
+    else I can help you with today?"
+
+CONSTRAINTS:
+- Never discuss pricing in detail; defer to Troy
+- Never promise specific outcomes from training
+- If unsure, say "Let me check on that for you" and call back
+- Always get caller consent before transferring
+
+Remember: You are representing Troy and Dale Carnegie.
+Be professional, helpful, and courteous at all times.
+    </blockquote>
+
+    <h3>7.2 Booking Confirmation Prompt</h3>
+    <blockquote>
+When booking an appointment, ALWAYS confirm:
+1. "Just to confirm, I have you booked for [DAY] at [TIME]."
+2. "The meeting will be with Troy Treleaven at [LOCATION]."
+3. "What email should I send the confirmation to?"
+4. "Is there anything specific you'd like Troy to prepare?"
+5. "Is it okay if I send you a brief reminder the day before?"
+
+After confirmation:
+"I'll send a confirmation email to [EMAIL] with all the details.
+Thank you for your interest in Dale Carnegie Training!"
+    </blockquote>
+
+    <div class="page-break"></div>
+
+    <h2>8. Testing Protocol</h2>
+    
+    <h3>8.1 Unit Tests</h3>
+    <table>
+        <tr><th>Test</th><th>Expected Result</th></tr>
+        <tr><td>Greeting plays correctly</td><td>Agent says greeting within 2 seconds</td></tr>
+        <tr><td>Silence detection works</td><td>Call transfers after 5 seconds silence</td></tr>
+        <tr><td>DTMF input recognized</td><td>Numeric input processed correctly</td></tr>
+        <tr><td>Transfer works</td><td>Call transfers without error</td></tr>
+    </table>
+
+    <h3>8.2 Scenario Tests</h3>
+    <table>
+        <tr><th>Scenario</th><th>Test Case</th><th>Pass Criteria</th></tr>
+        <tr><td><strong>Inbound Call</strong></td><td>Caller asks about training</td><td>Agent explains services, qualifies caller</td></tr>
+        <tr><td><strong>Booking</strong></td><td>Caller wants to book consultation</td><td>Agent collects info, creates booking</td></tr>
+        <tr><td><strong>Transfer</strong></td><td>Caller demands human</td><td>Agent transfers politely</td></tr>
+        <tr><td><strong>Voicemail</strong></td><td>Call goes to voicemail</td><td>Agent leaves appropriate message</td></tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h2>9. Deployment Checklist</h2>
+    
+    <h3>Pre-Launch Checklist</h3>
+    <ul class="checklist">
+        <li>Twilio account created and verified</li>
+        <li>Phone number purchased and configured</li>
+        <li>ElevenLabs account created and funded</li>
+        <li>Conversational AI agent created and tested</li>
+        <li>Voice settings optimized (stability/clarity)</li>
+        <li>Twilio webhook pointing to production URL</li>
+        <li>All prompts written and tested</li>
+        <li>OpenClaw configured with credentials</li>
+        <li>Test calls completed successfully</li>
+        <li>Cost alerts configured in both platforms</li>
+        <li>Legal compliance verified (recording disclosure)</li>
+        <li>CRM integration tested (if applicable)</li>
+        <li>Calendar integration tested (if applicable)</li>
+    </ul>
+
+    <h3>Day 1 Operations</h3>
+    <ul class="checklist">
+        <li>Make first real outbound call</li>
+        <li>Monitor for any issues in first hour</li>
+        <li>Check webhook logs for errors</li>
+        <li>Test transfer to human</li>
+    </ul>
+
+    <h3>Week 1 Monitoring</h3>
+    <ul class="checklist">
+        <li>Review call recordings daily</li>
+        <li>Track completion rate</li>
+        <li>Identify common failure points</li>
+        <li>Adjust prompts based on real conversations</li>
+        <li>Monitor costs stay within budget</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h2>10. Cost Analysis</h2>
+    
+    <h3>Monthly Cost Estimate (CAD)</h3>
+    <table>
+        <tr><th>Item</th><th>Cost</th></tr>
+        <tr><td>Twilio Phone Number</td><td>$1.50</td></tr>
+        <tr><td>Twilio Calls (100 min @ $0.02/min)</td><td>$2.00</td></tr>
+        <tr><td>ElevenLabs (100 min @ $0.20/min)</td><td>$20.00</td></tr>
+        <tr><td><strong>Total Monthly</strong></td><td><strong>~$23.50</strong></td></tr>
+    </table>
+
+    <h3>Per-Call Breakdown</h3>
+    <table>
+        <tr><th>Call Type</th><th>Duration</th><th>Cost</th></tr>
+        <tr><td>Short Inquiry</td><td>2 min</td><td>$0.44</td></tr>
+        <tr><td>Booking Call</td><td>5 min</td><td>$1.10</td></tr>
+        <tr><td>Complex Lead</td><td>10 min</td><td>$2.20</td></tr>
+        <tr><td>Reservation Call</td><td>3 min</td><td>$0.66</td></tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h2>11. Legal Compliance</h2>
+    
+    <h3>Ontario Recording Laws</h3>
+    <div class="important">
+        <strong>Important:</strong> Ontario is a "two-party consent" jurisdiction for recording.
+    </div>
+
+    <p><strong>REQUIRED DISCLOSURE:</strong></p>
+    <p>At the start of EVERY call, the agent MUST say:</p>
+    <blockquote>
+"This call may be recorded for quality assurance and training purposes. This is Dale Carnegie Training."
+    </blockquote>
+
+    <h3>Privacy Compliance (PIPEDA)</h3>
+    <p>When collecting information, ensure:</p>
+    <ol>
+        <li><strong>Purpose Statement:</strong> "I'm collecting this to book your appointment."</li>
+        <li><strong>Data Retention:</strong> "Your information will be kept for [X] months."</li>
+        <li><strong>Consent:</strong> "Is it okay if I send you follow-up information?"</li>
+    </ol>
+
+    <h3>Callback Compliance</h3>
+    <p>If calling prospects:</p>
+    <ol>
+        <li><strong>Identify Yourself:</strong> "Hi, this is [Name] calling from Dale Carnegie."</li>
+        <li><strong>State Purpose:</strong> "I'm calling about [reason from CRM]."</li>
+        <li><strong>Get Consent:</strong> "Do you have a moment to talk?"</li>
+        <li><strong>Respect Do Not Call:</strong> If asked not to call, mark in CRM.</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <h2>12. Troubleshooting</h2>
+    
+    <h3>Common Issues</h3>
+    <table>
+        <tr><th>Issue</th><th>Cause</th><th>Solution</th></tr>
+        <tr><td>Agent not answering</td><td>Webhook URL incorrect</td><td>Verify URL in Twilio console</td></tr>
+        <tr><td>Long latency</td><td>Network delay</td><td>Use closer server or CDN</td></tr>
+        <tr><td>Poor voice quality</td><td>Bandwidth issues</td><td>Reduce audio quality settings</td></tr>
+        <tr><td>Wrong responses</td><td>Prompt issues</td><td>Review and update prompt</td></tr>
+        <tr><td>Transfer fails</td><td>Phone number wrong</td><td>Verify transfer number</td></tr>
+    </table>
+
+    <h2>13. Future Enhancements</h2>
+    
+    <h3>Phase 2 Ideas</h3>
+    <ul class="checklist">
+        <li>CRM integration (Salesforce/HubSpot)</li>
+        <li>Calendar integration (Google/Outlook)</li>
+        <li>Email follow-up automation</li>
+        <li>SMS confirmation via Twilio</li>
+        <li>Multi-language support</li>
+        <li>Sentiment analysis</li>
+        <li>Call analytics dashboard</li>
+        <li>A/B testing for prompts</li>
+    </ul>
+
+    <hr>
+
+    <p><em>Document Prepared: February 13, 2026<br>
+    Next Review: March 1, 2026</em></p>
+
+</body>
+</html>

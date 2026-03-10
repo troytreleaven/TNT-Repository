@@ -1,0 +1,233 @@
+# Dale Carnegie Preview Meeting Invitation
+## Master Email Template Structure
+
+---
+
+## 1. SUBJECT LINE OPTIONS
+
+**Urgency Angle:**
+"Only 6 spots left: Leadership preview [Date]"
+
+**Curiosity Angle:**
+"The real reason most management training fails"
+
+**Benefit Angle:**
+"Build a team that actually executes — free preview inside"
+
+**Social Proof Angle:**
+"How [Company Type] leaders cut turnover 40% (preview session)"
+
+**Direct Angle:**
+"Dale Carnegie leadership preview — [Date/Time]"
+
+---
+
+## 2. OPENING HOOK OPTIONS
+
+**Option A — The Reality Check:**
+"You've tried the workshops. Sent the team to the seminars. Yet somehow, Monday morning looks the same as it did last year. What if the problem isn't your people — it's the approach?"
+
+**Option B — The Contrarian:**
+"Most leadership training is forgotten by Friday. Not because your managers don't care — because it wasn't built for real-world pressure. There's a different way, and it starts with one decision."
+
+**Option C — The Scenario:**
+"Picture this: Your team tackles problems without you. Conflicts resolve before they reach your desk. Your best people stay — and bring their friends. That's not luck. That's a system."
+
+---
+
+## 3. BODY STRUCTURE TEMPLATE
+
+### [PAIN_POINT_SECTION]
+(PARAGRAPH 1 — 2-3 sentences max)
+Acknowledge a specific, relatable pain point the business owner faces:
+- High turnover despite competitive pay
+- Managers who avoid difficult conversations
+- Training that doesn't stick
+- Teams that wait to be told what to do
+
+**Example:**
+"You've invested in training before. Your managers sat through workshops, took notes, even seemed motivated. But back at the office? Old habits returned within weeks."
+
+### [SOLUTION_SECTION]
+(PARAGRAPH 2 — 2-3 sentences max)
+Introduce the solution without giving the full pitch. Focus on the *outcome*, not the process:
+
+**Example:**
+"Dale Carnegie training works because it rewires behavior, not just knowledge. Our graduates don't just understand leadership — they practice it until it becomes automatic."
+
+### [SOCIAL_PROOF]
+(PARAGRAPH 3 — 1-2 sentences OR bullet points)
+Use one of these formats:
+
+**Format A — Single Stat:**
+"One manufacturing client cut supervisor turnover by 47% within 18 months."
+
+**Format B — Testimonial Snippet:**
+"'For the first time, my team is solving problems instead of bringing them to me.' — Operations Director, [Industry]"
+
+**Format C — Bullet Proof:**
+• 4,000+ companies trained annually  
+• 89% of graduates report improved team performance  
+• Used by 400+ of the Fortune 500
+
+### [EVENT_DETAILS]
+(Separate paragraph with white space above)
+**See it in action:**
+
+**Date:** [Day, Month Date, Year]  
+**Time:** [Start Time] — [End Time]  
+**Format:** [In-person/Virtual]  
+**Investment:** [Free/Complimentary]
+
+### [CTA]
+(Final paragraph — ONE clear action)
+
+**Strong:**
+**[Reserve my seat →]**
+
+**Alternative:**
+**[Claim your spot (space is limited) →]**
+
+---
+
+## 4. FORMATTING GUIDELINES
+
+### Paragraph Length
+- Maximum 2-3 sentences per paragraph
+- Single idea per paragraph
+- No walls of text
+
+### White Space Rules
+- Blank line between every paragraph
+- Blank line before event details
+- Extra spacing after CTA before signature
+
+### Text Emphasis
+- **Bold** for key outcomes and CTAs
+- Use sparingly — 2-3 bold elements maximum
+- Never bold entire paragraphs
+
+### Bullet Points
+- Use only for social proof section
+- Maximum 3 bullets
+- Lead with the result/number
+
+### Mobile Optimization
+- Subject line: 40 characters or less (test on mobile preview)
+- Sender name should be a person, not "noreply"
+- Preheader text: 80-100 characters
+- Links: large tap targets, spaced apart
+- Preview on iPhone and Android before sending
+
+### Signature Block
+```
+—
+
+[First Name]
+[Title], Dale Carnegie [Location]
+[Email] | [Phone]
+[LinkedIn URL — optional]
+
+P.S. [Optional: Add urgency or secondary benefit]
+```
+
+---
+
+## 5. TONE CHECKLIST
+
+Before sending, verify:
+
+**Conversational, not corporate:**
+- ❌ "We would like to extend an invitation..."
+- ✅ "I'd like to invite you to..."
+- ❌ "Leverage our proven methodology..."
+- ✅ "Here's what actually works..."
+
+**Confident, not arrogant:**
+- ❌ "We're the best in the business."
+- ✅ "We train 4,000+ companies a year. Here's why they keep coming back."
+- ❌ "You need this training."
+- ✅ "If you're tired of training that doesn't stick, this is worth 90 minutes."
+
+**Urgent, not desperate:**
+- ❌ "Please respond ASAP!"
+- ✅ "6 seats available. First come, first served."
+- ❌ "Don't miss this opportunity!"
+- ✅ "If this resonates, grab a spot."
+
+**Professional, not stiff:**
+- ❌ "Dear Sir/Madam,"
+- ✅ "Hi [First Name],"
+- ❌ "We remain at your disposal..."
+- ✅ "Questions? Just reply to this email."
+
+---
+
+## 6. COMPLETE EXAMPLE EMAIL
+
+**Subject:** The real reason most management training fails
+
+Hi [First Name],
+
+You've tried the workshops. Sent the team to the seminars. Yet somehow, Monday morning looks the same as it did last year.
+
+What if the problem isn't your people — it's the approach?
+
+Dale Carnegie training works because it rewires behavior, not just knowledge. Our graduates don't just understand leadership — they practice it until it becomes automatic.
+
+One manufacturing client cut supervisor turnover by 47% within 18 months.
+
+**See it in action:**
+
+**Date:** Tuesday, March 25  
+**Time:** 9:00 AM — 10:30 AM EST  
+**Format:** Virtual (Zoom)  
+**Investment:** Complimentary
+
+**[Reserve my seat →]**
+
+—
+
+Sarah Chen
+Program Director, Dale Carolina
+sarah.chen@dalecarnegie.com | (555) 123-4567
+
+P.S. Space is limited to 12 participants for Q&A. If this resonates, grab a spot.
+
+---
+
+## 7. PLACEHOLDER CHEAT SHEET
+
+**[PAIN_POINT_SECTION]:**  
+Describe 1-2 specific frustrations the recipient likely experiences. Be specific enough to feel personal, broad enough to apply to most business owners.
+
+**[SOLUTION_SECTION]:**  
+The "what" without the "how." Promise an outcome, not a curriculum. Keep it under 40 words.
+
+**[SOCIAL_PROOF]:**  
+One compelling stat, quote, or credential. Specificity beats generic praise.
+
+**[EVENT_DETAILS]:**  
+Date, time, format, cost. Use bold headers. Separate with white space.
+
+**[CTA]:**  
+Single action. Button or bold link. No secondary CTAs.
+
+---
+
+## 8. QUICK REFERENCE: WORD COUNTS
+
+- **Subject:** 40-50 characters
+- **Body:** 250-350 words maximum
+- **Opening hook:** 25-40 words
+- **Pain point section:** 30-50 words
+- **Solution section:** 25-40 words
+- **Social proof:** 15-30 words
+- **Event details:** 25-40 words
+- **CTA:** 3-5 words
+
+---
+
+*Template Version: 1.0*  
+*Purpose: Dale Carnegie Preview Meeting Invitation*  
+*Format: Short-form sales email*
