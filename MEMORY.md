@@ -1,5 +1,18 @@
 # MEMORY.md
 
+## 2026-03-11 - BAC Handout Printing Workflow
+
+**Trigger phrase:** "Send the BAC Handout to Staples for printing" (or similar variations)
+
+**Action:**
+1. Email the BAC_Handout.pdf to: **Staplesmobile@printme.com**
+2. Use sending address: **ttreleaven@dalecarnegie.ca**
+3. Document location: `/data/.openclaw/workspace/documents/BAC_Handout.pdf`
+
+**Document details:** Business Advancement Meeting handout from Dale Carnegie Business Group (questionnaire for BAC sessions)
+
+---
+
 ## 2026-03-03 - System Hardening: Maximum Uptime Safeguards
 
 ### CRITICAL: Keep Jarvis Online at All Times

@@ -53,7 +53,7 @@ Dale Carnegie Training of Toronto, Hamilton, KW, Niagara, and Maritimes
 
 📱 Mobile: 905.928.1034
 🌐 Website: Dale Carnegie Ontario and Maritimes
-📅 Book time: calendly.com/troytreleaven
+📅 Book time: https://app.usemotion.com/meet/0mgjn47/meeting
 💻 Zoom: zoom.us/j/3095287379
 🔗 LinkedIn: linkedin.com/in/troytreleaven
 🐦 Twitter: @DaleCarnegieSCO
