@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "profiles": {
+    "openrouter:default": {
+      "type": "api_key",
+      "provider": "openrouter",
+      "key": "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"
+    },
+    "moonshot:default": {
+      "type": "api_key",
+      "provider": "moonshot",
+      "key": "sk-0fkGD29ivHnpRDqNYBI13lsf6OuySTdSB0NuRb8NEzoLFzqI"
+    },
+    "openrouter:manual": {
+      "type": "token",
+      "provider": "openrouter",
+      "token": "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"
+    }
+  },
+  "lastGood": {
+    "openrouter": "openrouter:manual",
+    "moonshot": "moonshot:default"
+  },
+  "usageStats": {
+    "openrouter:default": {
+      "lastUsed": 1773513698984,
+      "errorCount": 0,
+      "lastFailureAt": 1770991065607
+    },
+    "moonshot:default": {
+      "lastUsed": 1771012355882,
+      "errorCount": 0
+    },
+    "openrouter:manual": {
+      "lastUsed": 1773522754525,
+      "errorCount": 0
+    }
+  }
+}
