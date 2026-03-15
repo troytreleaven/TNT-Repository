@@ -1,7 +1,7 @@
 {
   "agent:main:main": {
     "sessionId": "fb944ae9-1e4e-4f8a-b431-a014b07288f8",
-    "updatedAt": 1773522853535,
+    "updatedAt": 1773523823103,
     "systemSent": true,
     "skillsSnapshot": {
       "prompt": "\n\nThe following skills provide specialized instructions for specific tasks.\nUse the read tool to load a skill's file when the task matches its description.\nWhen a skill file references a relative path, resolve it against the skill directory (parent of SKILL.md / dirname of the path) and use that absolute path in tool commands.\n\n<available_skills>\n  <skill>\n    <name>healthcheck</name>\n    <description>Host security hardening and risk-tolerance configuration for OpenClaw deployments. Use when a user asks for security audits, firewall/SSH/update hardening, risk posture, exposure review, OpenClaw cron scheduling for periodic checks, or version status checks on a machine running OpenClaw (laptop, workstation, Pi, VPS).</description>\n    <location>/usr/lib/node_modules/openclaw/skills/healthcheck/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>notion</name>\n    <description>Notion API for creating and managing pages, databases, and blocks.</description>\n    <location>/usr/lib/node_modules/openclaw/skills/notion/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>openai-image-gen</name>\n    <description>Batch-generate images via OpenAI Images API. Random prompt sampler + `index.html` gallery.</description>\n    <location>/usr/lib/node_modules/openclaw/skills/openai-image-gen/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>openai-whisper-api</name>\n    <description>Transcribe audio via OpenAI Audio Transcriptions API (Whisper).</description>\n    <location>/usr/lib/node_modules/openclaw/skills/openai-whisper-api/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>skill-creator</name>\n    <description>Create or update AgentSkills. Use when designing, structuring, or packaging skills with scripts, references, and assets.</description>\n    <location>/usr/lib/node_modules/openclaw/skills/skill-creator/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>tmux</name>\n    <description>Remote-control tmux sessions for interactive CLIs by sending keystrokes and scraping pane output.</description>\n    <location>/usr/lib/node_modules/openclaw/skills/tmux/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>weather</name>\n    <description>Get current weather and forecasts (no API key required).</description>\n    <location>/usr/lib/node_modules/openclaw/skills/weather/SKILL.md</location>\n  </skill>\n</available_skills>",
@@ -103,12 +103,12 @@
     "model": "minimax/minimax-m2",
     "contextTokens": 205000,
     "abortedLastRun": false,
-    "inputTokens": 213895,
-    "outputTokens": 486,
+    "inputTokens": 1084257,
+    "outputTokens": 3136,
     "totalTokens": 205000,
     "chatType": "direct",
     "origin": {
-      "label": "Troy Treleaven (@troytreleaven) id:1438745226",
+      "label": "Troy Treleaven",
       "provider": "telegram",
       "from": "telegram:1438745226",
       "to": "telegram:1438745226",
@@ -119,7 +119,7 @@
     "sessionFile": "/home/clawbot/.openclaw/agents/main/sessions/fb944ae9-1e4e-4f8a-b431-a014b07288f8.jsonl",
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1773522718014,
+      "generatedAt": 1773522853792,
       "sessionId": "fb944ae9-1e4e-4f8a-b431-a014b07288f8",
       "sessionKey": "agent:main:main",
       "provider": "openrouter",
@@ -386,7 +386,8 @@
     "authProfileOverrideSource": "auto",
     "authProfileOverrideCompactionCount": 0,
     "memoryFlushAt": 1773516608486,
-    "memoryFlushCompactionCount": 0
+    "memoryFlushCompactionCount": 0,
+    "responseUsage": "tokens"
   },
   "agent:main:cron:eda5383f-1088-43c7-ba8c-0eee5ca50593": {
     "sessionId": "b48f4919-c82d-4772-bddc-955db06dbc2b",

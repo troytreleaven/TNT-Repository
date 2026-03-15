@@ -24,16 +24,25 @@
   "usageStats": {
     "openrouter:default": {
       "lastUsed": 1773513698984,
-      "errorCount": 0,
-      "lastFailureAt": 1770991065607
+      "errorCount": 2,
+      "lastFailureAt": 1773523640065,
+      "failureCounts": {
+        "auth": 2
+      },
+      "cooldownUntil": 1773523940065
     },
     "moonshot:default": {
       "lastUsed": 1771012355882,
       "errorCount": 0
     },
     "openrouter:manual": {
-      "lastUsed": 1773522754525,
-      "errorCount": 0
+      "lastUsed": 1773522979927,
+      "errorCount": 2,
+      "failureCounts": {
+        "auth": 2
+      },
+      "lastFailureAt": 1773523639912,
+      "cooldownUntil": 1773523939912
     }
   }
 }
