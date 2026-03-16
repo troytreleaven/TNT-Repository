@@ -1,5 +1,75 @@
 # MEMORY.md
 
+## 2026-03-15 - Daily GitHub Backup
+### Task: Backup workspace to GitHub each night at 2 AM EST
+- **Time:** 2:00 AM EST daily (crontab)
+- **Location:** `/data/.openclaw/workspace/`
+- **GitHub Repo:** Will create/connect to repo
+- **Files to backup:** All workspace files, skills, memory, configs
+- **Status:** ⚠️ PENDING SETUP - Need to create cron job
+- **Note:** Added per Troy's instruction
+
+---
+
+## 2026-03-15 - OpenClaw Free Tier Setup Guide (NVIDIA NIM)
+
+**Source:** Grok research for Troy Treleaven
+**Goal:** Run OpenClaw for nearly free using NVIDIA's hosted inference APIs
+
+### The Trick
+NVIDIA offers free, rate-limited API access (no credit card needed for basic dev use) to frontier models via build.nvidia.com. This gives OpenAI-compatible access inside OpenClaw.
+
+### What You Need
+1. Free NVIDIA Developer account at build.nvidia.com
+2. API key (starts with `nvapi-`)
+3. Three things to configure in OpenClaw:
+
+| Setting | Value |
+|---------|-------|
+| Base URL | `https://integrate.api.nvidia.com/v1` |
+| API Key | Your NVIDIA key (nvapi-...) |
+| Model ID | e.g., `minimaxai/minimax-m2.5` or `moonshotai/kimi-k2.5` |
+
+### Available Models
+- **MiniMax M2.5:** `minimaxai/minimax-m2.5`
+- **Kimi K2.5:** `moonshotai/kimi-k2.5`
+- Nemotron variants
+- Others at build.nvidia.com
+
+### Resources
+
+**Video Tutorials:**
+- "Run OpenClaw for Free with Kimi K2.5": https://www.youtube.com/watch?v=aBYmq47-5oQ
+- "MiniMax M2.5 + OpenClaw: The Cheapest Frontier Agent Setup": https://www.youtube.com/watch?v=sSVV07jMhE0
+- "OpenClaw: New FREE AI Update + Minimax 2.1 + Kimi K.2!": https://www.youtube.com/watch?v=pW24NW0tgjA
+
+**Written Guides:**
+- Blog post with config steps: https://www.tienle.com/2026/02-14/openclaw-with-free-models-from-nvidia.html
+- GitHub repo (free-the-claw scripts): https://github.com/polats/free-the-claw
+
+**Official NVIDIA Pages:**
+- MiniMax M2.5: https://build.nvidia.com/minimaxai/minimax-m2.5
+- Kimi K2.5: https://build.nvidia.com/moonshotai/kimi-k2.5
+
+### Status
+**✅ IMPLEMENTED** - Config updated 2026-03-15
+
+**Current Model Priority:**
+1. **Primary:** `nvidia/minimaxai/minimax-m2.5` (NVIDIA Free Tier)
+2. **Fallback 1:** `nvidia/moonshotai/kimi-k2.5` (NVIDIA Free Tier)
+3. **Fallback 2:** `minimax/MiniMax-M2.5` (Paid Direct)
+4. **Fallback 3:** `moonshot/kimi-k2.5` (Paid Direct)
+
+**Config Location:** `/data/.openclaw/openclaw.json`
+
+### Future Model Additions (Pending - Test Current Setup First)
+- **GLM-5:** https://build.nvidia.com/z-ai/glm5 | ID: `z-ai/glm5` | 744B MoE, coding/reasoning
+- **Nemotron-3-Super:** https://build.nvidia.com/nvidia/nemotron-3-super-120b-a12b | ID: `nvidia/nemotron-3-super-120b-a12b` | 1M context, agent-optimized
+- **Qwen3:** Check build.nvidia.com for latest IDs | Strong coding/reasoning
+- **Reminder:** Re-evaluate in 1-2 days
+
+---
+
 ## 2026-03-11 - BAC Handout Printing Workflow
 
 **Trigger phrase:** "Send the BAC Handout to Staples for printing" (or similar variations)
@@ -146,6 +216,12 @@ Ontario & The Maritimes
 
 ## 2026-02-08
 - Configuration finalized: Kimi K2.5 (Main), MiniMax M2.1 (Coding), Gemini 3 Flash (Heartbeat).
+
+## 2026-03-15 - Model Priority Updated
+- **Main/Primary:** MiniMax-M2.5
+- **Backup:** Kimi K2.5 (fallback)
+- **Heartbeat:** Gemini 3 Flash Preview
+- **Note:** Swapped priority - MiniMax now primary, Kimi as backup
 - Brave Search API enabled for research.
 - Scheduled 8:00 AM Daily Spend Report and Hourly Olympics Medal Alerts for Team Canada.
 - System hardened: permissions fixed and world-readable config removed.

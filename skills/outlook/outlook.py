@@ -212,7 +212,7 @@ def cmd_send_email(token, args, user):
         "saveToSentItems": "true"
     }
     
-    result = make_request("me/sentMessages", token, method="POST", data=email_msg, user=user)
+    result = make_request("users/" + user + "/sendMail", token, method="POST", data=email_msg, user=user)
     
     if result and 'id' in result:
         print(f"✅ Email sent to {to_email}")

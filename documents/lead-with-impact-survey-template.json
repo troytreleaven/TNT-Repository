@@ -1,0 +1,118 @@
+{
+  "title": "Lead with Impact - Program Feedback Survey",
+  "description": "Thank you for participating in the Lead with Impact program! Your feedback helps us continuously improve the experience for future leaders. This survey takes approximately 5-7 minutes to complete.",
+  "questions": [
+    {
+      "section": "Section 1: Onboarding Experience",
+      "sectionDescription": "Please rate your experience with the onboarding process (forms, DISC assessment, and coaching call)."
+    },
+    {
+      "type": "scale",
+      "title": "How satisfied were you with the overall onboarding experience?",
+      "low": 1,
+      "high": 5,
+      "lowLabel": "Very Dissatisfied",
+      "highLabel": "Very Satisfied",
+      "required": true
+    },
+    {
+      "type": "scale", 
+      "title": "The onboarding coaching call helped clarify my goals and expectations for the program.",
+      "low": 1,
+      "high": 5,
+      "lowLabel": "Strongly Disagree",
+      "highLabel": "Strongly Agree",
+      "required": true
+    },
+    {
+      "type": "text",
+      "title": "What could we improve about the onboarding process?",
+      "required": false
+    },
+    {
+      "section": "Section 2: 3-Day Leadership Boot Camp",
+      "sectionDescription": "Please share your feedback on the intensive 3-day boot camp experience."
+    },
+    {
+      "type": "scale",
+      "title": "How satisfied were you with the 3-day Leadership Boot Camp?",
+      "low": 1,
+      "high": 5,
+      "lowLabel": "Very Dissatisfied",
+      "highLabel": "Very Satisfied",
+      "required": true
+    },
+    {
+      "type": "scale",
+      "title": "The instructors were knowledgeable and engaging.",
+      "low": 1,
+      "high": 5,
+      "lowLabel": "Strongly Disagree",
+      "highLabel": "Strongly Agree",
+      "required": true
+    },
+    {
+      "type": "scale",
+      "title": "The content was relevant to my leadership role and challenges.",
+      "low": 1,
+      "high": 5,
+      "lowLabel": "Strongly Disagree",
+      "highLabel": "Strongly Agree",
+      "required": true
+    },
+    {
+      "type": "paragraph",
+      "title": "What was the most valuable takeaway from the boot camp?",
+      "required": false
+    },
+    {
+      "section": "Section 3: Leadership Labs (Weekly Sessions)",
+      "sectionDescription": "Please rate your experience with the ongoing Leadership Labs."
+    },
+    {
+      "type": "scale",
+      "title": "The Leadership Labs met my expectations for ongoing development.",
+      "low": 1,
+      "high": 5,
+      "lowLabel": "Strongly Disagree",
+      "highLabel": "Strongly Agree",
+      "required": true
+    },
+    {
+      "type": "scale",
+      "title": "I have been able to apply what I learned in the Labs to my actual work.",
+      "low": 1,
+      "high": 5,
+      "lowLabel": "Strongly Disagree",
+      "highLabel": "Strongly Agree",
+      "required": true
+    },
+    {
+      "section": "Section 4: Overall Program Experience",
+      "sectionDescription": "Final questions about your complete Lead with Impact journey."
+    },
+    {
+      "type": "scale",
+      "title": "How likely are you to recommend Lead with Impact to a colleague or friend?",
+      "low": 0,
+      "high": 10,
+      "lowLabel": "Not at all likely (0)",
+      "highLabel": "Extremely likely (10)",
+      "required": true
+    },
+    {
+      "type": "paragraph",
+      "title": "What has been the biggest impact of this program on your leadership?",
+      "required": false
+    },
+    {
+      "section": "Section 5: Additional Comments",
+      "sectionDescription": "Please share any other feedback, suggestions, or comments you'd like us to know."
+    },
+    {
+      "type": "paragraph",
+      "title": "Any additional comments or feedback?",
+      "required": false
+    }
+  ]
+}
