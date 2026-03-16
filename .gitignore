@@ -1,60 +1,29 @@
-# Dependencies
-node_modules/
-*/node_modules/
-
-# Build outputs
-.next/
-dist/
-build/
-out/
-
-# Environment files (keep secrets safe)
+# Sensitive credentials (never commit)
 .env
-.env.local
-.env.*.local
+.env.*
+*.json
+*credentials*
+*secret*
+*token*
+*.key
+id_rsa*
+*.pem
+*.p12
+
+# OpenClaw system
+.openclaw/
+node_modules/
+.gws-service-account.json
+
+# OS
+.DS_Store
+Thumbs.db
 
 # Logs
 *.log
 logs/
 
-# OS files
-.DS_Store
-Thumbs.db
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Large media files (keep these separate)
-*.mp4
-*.mp3
-*.wav
-*.avi
-*.mov
-
-# Temporary files
-*.tmp
-*.temp
-cache/
-
-# Package locks (keep package.json, ignore locks)
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-
-# Test coverage
-coverage/
-.nyc_output/
-
-# Large archives (keep these separate)
-*.tar.gz
-*.zip
-*.rar
-
-# Binary files
-*.exe
-*.dll
-*.so
-*.bin
+# Memory (may contain credentials)
+memory/secure-*.md
+memory/*credentials*.md
+memory/outlook-credentials.md
