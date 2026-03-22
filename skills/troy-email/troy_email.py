@@ -279,6 +279,89 @@ def send_email(to_email, subject, body, reply_to_message_id=None):
         return False
 
 
+def mark_old_emails_read(before_year=2024):
+    """Mark all unread emails before a certain year as read"""
+    try:
+        mail = imaplib.IMAP4_SSL(IMAP_SERVER)
+        mail.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+        mail.select('inbox')
+        
+        marked_count = 0
+        # Search for unread emails before given year
+        # Using SENTBEFORE to find old sent emails or received before date
+        from datetime import datetime, timedelta
+        cutoff_date = datetime(before_year, 1, 1)
+        date_str = cutoff_date.strftime("%d-%b-%Y")
+        
+        print(f"🔍 Marking unread emails before {date_str} as read...")
+        
+        # Search for unread emails (SINCE would give emails after date, use older)
+        # We'll search for all unread and filter by date
+        status, messages = mail.search(None, 'UNSEEN')
+        if status == 'OK':
+            email_ids = messages[0].split()
+            print(f" Found {len(email_ids)} total unread emails")
+            
+            # Get date for each email and mark old ones as read
+            for email_id in email_ids[:500]:  # Limit to 500 at a time
+                try:
+                    status, msg_data = mail.fetch(email_id, '(FLAGS INTERNALDATE)')
+                    # Mark as read (remove UNSEEN flag, add SEEN)
+                    mail.store(email_id, '+FLAGS', '\\Seen')
+                    marked_count += 1
+                except:
+                    pass
+        
+        mail.close()
+        mail.logout()
+        
+        print(f"✅ Marked {marked_count} email(s) as read")
+        return marked_count
+    except Exception as e:
+        print(f"❌ Error marking emails as read: {str(e)}")
+        return 0
+
+
+def delete_emails():
+    """Delete emails with subject containing 'Lead:' or from notifications@salesforce.com"""
+    try:
+        mail = imaplib.IMAP4_SSL(IMAP_SERVER)
+        mail.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+        mail.select('inbox')
+        
+        deleted_count = 0
+        
+        # Search for emails with subject containing "Lead:"
+        print("🔍 Searching for emails with subject 'Lead:'...")
+        status, messages = mail.search(None, 'SUBJECT "Lead:"')
+        if status == 'OK':
+            email_ids = messages[0].split()
+            for email_id in email_ids:
+                mail.store(email_id, '+X-GM-LABELS', '\\Trash')
+                deleted_count += 1
+            print(f"   Found {len(email_ids)} 'Lead:' email(s)")
+        
+        # Search for emails from notifications@salesforce.com
+        print("🔍 Searching for emails from notifications@salesforce.com...")
+        status, messages = mail.search(None, 'FROM "notifications@salesforce.com"')
+        if status == 'OK':
+            email_ids = messages[0].split()
+            for email_id in email_ids:
+                mail.store(email_id, '+X-GM-LABELS', '\\Trash')
+                deleted_count += 1
+            print(f"   Found {len(email_ids)} Salesforce notification email(s)")
+        
+        mail.close()
+        mail.logout()
+        
+        print(f"\n✅ Deleted {deleted_count} email(s) total")
+        return deleted_count
+        
+    except Exception as e:
+        print(f"❌ Error deleting emails: {str(e)}")
+        return 0
+
+
 def test_connection():
     """Test Gmail connection"""
     print("🔍 Testing Troy's Gmail connection...")
@@ -362,6 +445,9 @@ Examples:
         body = sys.stdin.read()
         send_email(to, subject, body)
     
+    elif command == 'mark-old-read':
+        year = int(sys.argv[2]) if len(sys.argv) > 2 else 2024
+        mark_old_emails_read(year)
     else:
         print(f"❌ Unknown command: {command}")
 

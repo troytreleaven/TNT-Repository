@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-"""
-Outlook Skill - Microsoft 365 via Graph API
-"""
-
+""" Outlook Skill - Microsoft 365 via Graph API """
 import os
 import sys
 import json
 import requests
 import msal
-from datetime import datetime
+from datetime import datetime, timedelta
+
+# Try to import dateutil for timezone handling
+try:
+    from dateutil import parser, tz
+    HAS_DATEUTIL = True
+except ImportError:
+    HAS_DATEUTIL = False
 
 # Config
 SKILL_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -38,7 +42,6 @@ def get_token(env):
         client_credential=client_secret,
         authority=authority
     )
-    
     scopes = ["https://graph.microsoft.com/.default"]
     result = app.acquire_token_for_client(scopes=scopes)
     
@@ -54,6 +57,7 @@ def make_request(endpoint, token, method="GET", data=None, user=None):
     # Use /me for delegated, /users/{upn} for app-only
     if user and "/me/" in endpoint:
         endpoint = endpoint.replace("me/", f"users/{user}/")
+    
     url = f"https://graph.microsoft.com/v1.0/{endpoint}"
     headers = {
         "Authorization": f"Bearer {token}",
@@ -76,6 +80,28 @@ def make_request(endpoint, token, method="GET", data=None, user=None):
         print(resp.text)
         return None
 
+def format_time_to_toronto(utc_time_str):
+    """Convert UTC ISO time string to Toronto time"""
+    if not utc_time_str or not HAS_DATEUTIL:
+        return utc_time_str[:16] if utc_time_str else ""
+    
+    try:
+        dt = parser.isoparse(utc_time_str).astimezone(tz.gettz('America/New_York'))
+        return dt.strftime("%Y-%m-%d %I:%M %p")
+    except:
+        return utc_time_str[:16]
+
+def format_end_time(utc_time_str):
+    """Convert end time to Toronto time (just time)"""
+    if not utc_time_str or not HAS_DATEUTIL:
+        return utc_time_str[:16] if utc_time_str else ""
+    
+    try:
+        dt = parser.isoparse(utc_time_str).astimezone(tz.gettz('America/New_York'))
+        return dt.strftime("%I:%M %p")
+    except:
+        return utc_time_str[:16]
+
 def cmd_emails(token, args, user):
     """List recent emails"""
     top = args[0] if args else "10"
@@ -91,8 +117,8 @@ def cmd_emails(token, args, user):
             from_name = msg.get('from', {}).get('emailAddress', {}).get('name', 'Unknown')
             date = msg.get('receivedDateTime', '')[:10]
             print(f"{read_status} #{i}: {from_name}")
-            print(f"   Subject: {subject}")
-            print(f"   Date: {date}")
+            print(f" Subject: {subject}")
+            print(f" Date: {date}")
             print()
     else:
         print("No emails found or error occurred")
@@ -118,22 +144,41 @@ def cmd_read_email(token, args, user):
         print("Email not found or error occurred")
 
 def cmd_events(token, args, user):
-    """List calendar events"""
-    endpoint = f"users/{user}/events?$top=10&$select=subject,start,end,location,isOnlineMeeting"
+    """List calendar events - defaults to today if no args"""
+    # Default to today if no arguments
+    if not args:
+        today = datetime.now().strftime("%Y-%m-%d")
+        tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+        # Use calendarView with startDateTime and endDateTime as query params (required!)
+        endpoint = f"users/{user}/calendarView?startDateTime={today}T00:00:00&endDateTime={tomorrow}T23:59:59&$top=50&$select=subject,start,end,location,isOnlineMeeting,showAs&$orderby=start/dateTime"
+    elif args[0] == "all":
+        # Show all upcoming events for next 30 days
+        today = datetime.now().strftime("%Y-%m-%d")
+        future = (datetime.now() + timedelta(days=30)).strftime("%Y-%m-%d")
+        endpoint = f"users/{user}/calendarView?startDateTime={today}T00:00:00&endDateTime={future}T23:59:59&$top=50&$select=subject,start,end,location,isOnlineMeeting,showAs&$orderby=start/dateTime"
+    else:
+        # Legacy: treat as count
+        top = args[0]
+        endpoint = f"users/{user}/events?$top={top}&$select=subject,start,end,location,isOnlineMeeting&$orderby=start/dateTime"
+    
     result = make_request(endpoint, token, user=user)
     
     if result and 'value' in result:
-        print(f"📅 Upcoming {len(result['value'])} event(s):\n")
-        for i, evt in enumerate(result['value'], 1):
+        events = result['value']
+        print(f"📅 {len(events)} event(s):\n")
+        for i, evt in enumerate(events, 1):
             subject = evt.get('subject', '(No title)')
-            start = evt.get('start', {}).get('dateTime', '')[:16]
-            end = evt.get('end', {}).get('dateTime', '')[:16]
-            location = evt.get('location', {}).get('displayName', 'No location')
+            
+            # Convert to Toronto time
+            start = format_time_to_toronto(evt.get('start', {}).get('dateTime', ''))
+            end = format_end_time(evt.get('end', {}).get('dateTime', ''))
+            
+            location = evt.get('location', {}).get('displayName', '')
             online = "🖥️ Teams" if evt.get('isOnlineMeeting') else ""
             
             print(f"#{i}: {subject} {online}")
             print(f"   When: {start} - {end}")
-            if location != 'No location':
+            if location:
                 print(f"   Where: {location}")
             print()
     else:
@@ -163,10 +208,9 @@ def cmd_create_event(token, args, user):
     }
     
     result = make_request("me/events", token, method="POST", data=event, user=user)
-    
     if result and 'id' in result:
         print(f"✅ Event created: {title}")
-        print(f"   ID: {result['id']}")
+        print(f" ID: {result['id']}")
     else:
         print("❌ Failed to create event")
 
@@ -180,9 +224,9 @@ def cmd_whoami(token, args, user):
     
     if result:
         print(f"👤 Logged in as:")
-        print(f"   Name: {result.get('displayName', 'Unknown')}")
-        print(f"   Email: {result.get('mail', result.get('userPrincipalName', 'Unknown'))}")
-        print(f"   ID: {result.get('id', 'Unknown')}")
+        print(f" Name: {result.get('displayName', 'Unknown')}")
+        print(f" Email: {result.get('mail', result.get('userPrincipalName', 'Unknown'))}")
+        print(f" ID: {result.get('id', 'Unknown')}")
     else:
         print("Error getting user info")
 
@@ -204,16 +248,13 @@ def cmd_send_email(token, args, user):
                 "content": body
             },
             "toRecipients": [
-                {
-                    "emailAddress": {"address": to_email}
-                }
+                {"emailAddress": {"address": to_email}}
             ]
         },
         "saveToSentItems": "true"
     }
     
     result = make_request("users/" + user + "/sendMail", token, method="POST", data=email_msg, user=user)
-    
     if result and 'id' in result:
         print(f"✅ Email sent to {to_email}")
     else:
@@ -235,12 +276,13 @@ def main():
         print("Usage: python3 outlook.py <command> [args]")
         print()
         print("Commands:")
-        print("  emails                    List recent emails")
-        print("  read-email <id>           Read specific email")
-        print("  events                    List calendar events")
-        print("  create-event <title> <start> <end> [desc] [loc]  Create event")
-        print("  send-email <to> <subject> <body>  Send email")
-        print("  whoami                    Show current user")
+        print(" emails List recent emails")
+        print(" read-email <id> Read specific email")
+        print(" events List today's calendar events (default)")
+        print(" events all List all upcoming events (next 30 days)")
+        print(" create-event <title> <start> <end> [desc] [loc] Create event")
+        print(" send-email <to> <subject> <body> Send email")
+        print(" whoami Show current user")
         return
     
     cmd = sys.argv[1]

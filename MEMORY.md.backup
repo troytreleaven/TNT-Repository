@@ -17,6 +17,64 @@
 
 ---
 
+## 2026-03-15 - OpenClaw Free Tier Setup Guide (NVIDIA NIM)
+
+**Source:** Grok research for Troy Treleaven
+**Goal:** Run OpenClaw for nearly free using NVIDIA's hosted inference APIs
+
+### The Trick
+NVIDIA offers free, rate-limited API access (no credit card needed for basic dev use) to frontier models via build.nvidia.com. This gives OpenAI-compatible access inside OpenClaw.
+
+### What You Need
+1. Free NVIDIA Developer account at build.nvidia.com
+2. API key (starts with `nvapi-`)
+3. Three things to configure in OpenClaw:
+
+| Setting | Value |
+|---------|-------|
+| Base URL | `https://integrate.api.nvidia.com/v1` |
+| API Key | Your NVIDIA key (nvapi-...) |
+| Model ID | e.g., `minimaxai/minimax-m2.5` or `moonshotai/kimi-k2.5` |
+
+### Available Models
+- **MiniMax M2.5:** `minimaxai/minimax-m2.5`
+- **Kimi K2.5:** `moonshotai/kimi-k2.5`
+- Nemotron variants
+- Others at build.nvidia.com
+
+### Resources
+
+**Video Tutorials:**
+- "Run OpenClaw for Free with Kimi K2.5": https://www.youtube.com/watch?v=aBYmq47-5oQ
+- "MiniMax M2.5 + OpenClaw: The Cheapest Frontier Agent Setup": https://www.youtube.com/watch?v=sSVV07jMhE0
+- "OpenClaw: New FREE AI Update + Minimax 2.1 + Kimi K.2!": https://www.youtube.com/watch?v=pW24NW0tgjA
+
+**Written Guides:**
+- Blog post with config steps: https://www.tienle.com/2026/02-14/openclaw-with-free-models-from-nvidia.html
+- GitHub repo (free-the-claw scripts): https://github.com/polats/free-the-claw
+
+**Official NVIDIA Pages:**
+- MiniMax M2.5: https://build.nvidia.com/minimaxai/minimax-m2.5
+- Kimi K2.5: https://build.nvidia.com/moonshotai/kimi-k2.5
+
+### Status
+**✅ IMPLEMENTED** - Config updated 2026-03-15
+
+**Current Model Priority:**
+1. **Primary:** `nvidia/minimaxai/minimax-m2.5` (NVIDIA Free Tier)
+2. **Fallback 1:** `nvidia/moonshotai/kimi-k2.5` (NVIDIA Free Tier)
+3. **Fallback 2:** `minimax/MiniMax-M2.5` (Paid Direct)
+4. **Fallback 3:** `moonshot/kimi-k2.5` (Paid Direct)
+
+**Config Location:** `/data/.openclaw/openclaw.json`
+
+### Future Model Additions (Pending - Test Current Setup First)
+- **GLM-5:** https://build.nvidia.com/z-ai/glm5 | ID: `z-ai/glm5` | 744B MoE, coding/reasoning
+- **Nemotron-3-Super:** https://build.nvidia.com/nvidia/nemotron-3-super-120b-a12b | ID: `nvidia/nemotron-3-super-120b-a12b` | 1M context, agent-optimized
+- **Qwen3:** Check build.nvidia.com for latest IDs | Strong coding/reasoning
+- **Reminder:** Re-evaluate in 1-2 days
+
+---
 
 ## 2026-03-11 - BAC Handout Printing Workflow
 
@@ -78,6 +136,35 @@
 
 ---
 
+## 2026-03-06 - Amazon Voice Shopping Canceled
+
+**Troy's Decision:** Amazon Voice Shopping setup has been canceled and removed from the system.
+
+**Action Taken:**
+- ❌ Removed cron job "Amazon Voice Shopping Setup Reminder" (Job ID: 61232fff-eef1-45a6-9e45-6069dc0e7621)
+- ❌ Deleted from MEMORY.md (this note added for record)
+- ❌ Will not pursue further
+
+**Reason:** Troy no longer interested in this feature.
+
+---
+
+### 📂 System Scripts
+
+**Browser Starter:** `/data/.openclaw/start-browser.sh`
+**Full System Startup:** `/data/.openclaw/start-all.sh`
+**Logs:** `/data/.openclaw/logs/startup.log`
+
+---
+
+### 🚨 Incident Report: March 3, 2026
+
+**Problem:** Browser service down from 8:51 AM to 6:03 PM (9+ hours)
+**Root Cause:** Chromium remote debugging not auto-starting
+**Solution Implemented:** Multi-layered health monitoring with auto-restart
+**Status:** ✅ Fully hardened against future outages
+
+---
 
 ## 2026-03-03 - Mailing Address Added
 
@@ -133,6 +220,8 @@ Ontario & The Maritimes
 
 ---
 
+## 2026-02-08
+- Configuration finalized: Kimi K2.5 (Main), MiniMax M2.1 (Coding), Gemini 3 Flash (Heartbeat).
 
 ## 2026-03-15 - Model Priority Updated
 - **Main/Primary:** MiniMax-M2.5
@@ -393,6 +482,20 @@ Alex Chen is the Dale Carnegie GTA Operations Coordinator:
 **Status:** Saved for future reference/ideas
 **Context:** Troy shared this video and requested it be saved in memory as "the conductor" — likely leadership/orchestra analogy content relevant to Dale Carnegie training themes.
 
+## 2026-02-21 - MiniMax Coding Plan Details
+
+**Full documentation:** https://platform.minimax.io/docs/llms.txt
+
+### Key Points (explain when asked):
+- **Supported models:** MiniMax-M2.5, MiniMax-M2.1, MiniMax-M2 (and M2.5-highspeed with High-Speed subscription)
+- **Switching models:** Change the `model` parameter in API calls - all share same quota/billing
+- **Usage check:** https://platform.minimax.io/user-center/payment/coding-plan
+- **Reset mechanism:** Dynamic 5-hour window - usage from >5 hours ago automatically releases
+- **Why "1 prompt ≈ 15 model calls":** Single user action may trigger multiple backend interactions (context fetch, suggestions, refinements) - bundled as 1 prompt for simplified billing
+- **API Key difference:** Coding Plan key ≠ standard Open Platform key - they cannot be used interchangeably
+  - Coding Plan key: Measures in "prompts", subject to 5-hour limit
+  - Standard key: Measures in tokens, depletes account balance
+- **TPS (Tokens Per Second):** Formula: output tokens ÷ (time of last token - time of first token)
 
 ## 2026-02-21 - Netlify Account
 
@@ -456,7 +559,99 @@ results = web_search("leadership training", count=10)
 4. **News monitoring** - Industry trends without limits
 5. **Cost savings** - No more Brave API fees
 
+## 2026-02-22 - Cron Job Telegram Delivery Fix
 
+### Problem
+Cron jobs with `sessionTarget: "isolated"` and `delivery: {mode: "announce"}` were failing to deliver messages to Telegram, even though they reported "ok" status. Errors: "Unknown target 'troy'" and "chat not found."
+
+### Root Cause
+Isolated cron sessions don't have access to the user's session context. The "announce" delivery mode doesn't work reliably.
+
+### Solution
+All user-facing cron jobs must use:
+- `sessionTarget: "main"` (delivers to the main session where user is)
+- `payload.kind: "systemEvent"` (injects as system event)
+- No `delivery` config needed (main session auto-routes to Telegram)
+
+### Fixed Cron Jobs
+- Daily Dad Joke ✅
+- Daily File Review ✅
+- Daily Check-in - 12-Week Targets ✅
+- Mid-Week Progress Review ✅
+
+### Best Practice
+When creating NEW cron jobs that need to message Troy:
+```json
+{
+  "sessionTarget": "main",
+  "payload": {
+    "kind": "systemEvent",
+    "text": "Your message here"
+  }
+}
+```
+
+DO NOT use `sessionTarget: "isolated"` with `delivery` for user notifications - it doesn't work.
+
+---
+
+## 2026-03-04 - Tomorrow's Priorities (March 4, 2026)
+
+### Voice Call System - URGENT
+**Goal:** Complete Twilio voice call setup and make first real phone call
+**Status:** Credentials configured, error persists
+**Next Steps:**
+1. Debug "Maximum concurrent calls (1) reached" error
+2. Test actual phone call to 905-928-1034
+3. Verify two-way conversation works
+
+**Troy's Cell:** 905-928-1034
+**Twilio Number:** +19185582260
+**Config Location:** `/data/.openclaw/openclaw.json`
+
+### Active Tasks Waiting
+1. **Alex Chen Reply** - Waiting for:
+   - Daily work report
+   - 5 business improvement ideas
+
+2. **Boyd Automotive Follow-up** - Dave Heidebrecht identified:
+   - Consider reaching out for Dale Carnegie training
+
+3. **Expense Tracking** - System active:
+   - Next compilation: Saturday, March 7, 9:00 AM
+
+### Voice/TTS Features Active
+- **Voice Messages:** Working perfectly via Telegram
+- **Trigger:** "voice reply", "use TTS", "speak this"
+- **Technology:** OpenAI TTS (gpt-4o-mini-tts, alloy voice)
+
+### Key Reminders for Tomorrow
+- Voice call system needs completion
+- Check Alex Chen's email for his response
+- Review expense receipts if any new ones come in
+- Morning briefing at 7:45 AM (cron job)
+
+---
+
+**Troy's Instruction:** "Build this memory strong so we don't forget things and stay consistent."
+
+## 2026-03-08 - YouTube Video Links for Review
+
+### Video 1: https://youtube.com/shorts/B6RcG9zTwaQ
+- Source: Troy shared via Telegram
+- Status: Awaiting transcript (tools limited)
+- Action needed: Review when tools available
+
+### Video 2: https://youtu.be/vP4xn5653Y
+- Source: Troy shared via Telegram
+- Status: Awaiting transcript (tools limited)
+- Action needed: Review when tools available
+
+
+### Video 3: https://youtube.com/shorts/HpB7K5HiMQU
+- Source: Troy shared via Telegram
+- Status: Pending transcription attempt
+- Action needed: Extract content if possible
 
 
 ## 2026-03-08 - Major Progress Day

@@ -138,3 +138,10 @@
 
 *Add notes here after reading:*
 
+## 2026-03-15 - Article from Corey Ganim
+
+**URL:** https://x.com/coreyganim/status/2033324992251756604
+**Saved by:** Troy
+**Review at:** 7:30 AM March 16, 2026
+
+
