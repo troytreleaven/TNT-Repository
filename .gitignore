@@ -26,4 +26,8 @@ logs/
 # Memory (may contain credentials)
 memory/secure-*.md
 memory/*credentials*.md
-memory/outlook-credentials.md
+memory/outlook-credentials.md-e 
+# Large files - excluded from git
+*.tar.gz
+*.mp4
+media/outbound/*.tar.gz
