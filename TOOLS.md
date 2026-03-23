@@ -37,6 +37,17 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 ---
 
+## Telegram Groups
+| Group Name | Chat ID |
+|------------|---------|
+| Troy's VAs (Joanna & Jen) | -978038902 |
+| DT Crew | -4895683713 |
+| TE Crew | -4942721032 |
+| Marketing Reinvention | -4783349964 |
+| Maritimes GTM | -4177101595 |
+
+---
+
 ## Convex - Mission Control Task Board
 
 **Deployment URL:** https://patient-fox-716.convex.cloud
