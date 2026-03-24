@@ -9,9 +9,12 @@ import sys
 import smtplib
 import imaplib
 import email
+import re
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.message import Message
 from datetime import datetime
+from html import unescape
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -47,6 +50,71 @@ Dale Carnegie Training of Toronto, Hamilton, KW, Niagara, and Maritimes
 📥 DOWNLOAD Dale Carnegie Ebooks
 📊 Our programs, events and solutions
 """
+
+
+def clean_html(html: str) -> str:
+    """Convert basic HTML content into readable plain text."""
+    text = html
+    text = re.sub(r"<br\s*/?>", "\n", text, flags=re.IGNORECASE)
+    text = re.sub(r"<p[^>]*>", "\n", text, flags=re.IGNORECASE)
+    text = re.sub(r"</p>", "\n", text, flags=re.IGNORECASE)
+    text = re.sub(r"<\/?div[^>]*>", "\n", text, flags=re.IGNORECASE)
+    text = re.sub(r"<style[\s\S]*?</style>", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"<script[\s\S]*?</script>", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"<[^>]+>", "", text)
+    text = unescape(text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+
+def extract_email_body(msg: Message) -> str:
+    """Extract readable body text from an email message."""
+    plain_parts = []
+    html_parts = []
+
+    if msg.is_multipart():
+        for part in msg.walk():
+            content_type = part.get_content_type()
+            content_disposition = str(part.get("Content-Disposition", ""))
+            if content_disposition.lower().startswith("attachment"):
+                continue
+
+            payload = part.get_payload(decode=True)
+            if payload is None:
+                continue
+
+            charset = part.get_content_charset() or "utf-8"
+            try:
+                decoded = payload.decode(charset, errors="replace")
+            except Exception:
+                decoded = payload.decode("utf-8", errors="replace")
+
+            if content_type == "text/plain":
+                plain_parts.append(decoded)
+            elif content_type == "text/html":
+                html_parts.append(decoded)
+    else:
+        payload = msg.get_payload(decode=True)
+        if payload:
+            charset = msg.get_content_charset() or "utf-8"
+            try:
+                decoded = payload.decode(charset, errors="replace")
+            except Exception:
+                decoded = payload.decode("utf-8", errors="replace")
+
+            if msg.get_content_type() == "text/html":
+                html_parts.append(decoded)
+            else:
+                plain_parts.append(decoded)
+
+    if plain_parts:
+        body = "\n".join(plain_parts)
+    elif html_parts:
+        body = clean_html("\n".join(html_parts))
+    else:
+        body = ""
+
+    return body.strip()
 
 
 def check_unread_emails(limit=10):
@@ -88,21 +156,7 @@ def check_unread_emails(limit=10):
             else:
                 sender_name = from_addr
             
-            # Get body
-            body = ""
-            if msg.is_multipart():
-                for part in msg.walk():
-                    if part.get_content_type() == "text/plain":
-                        try:
-                            body = part.get_payload(decode=True).decode()
-                        except:
-                            pass
-                        break
-            else:
-                try:
-                    body = msg.get_payload(decode=True).decode()
-                except:
-                    pass
+            body = extract_email_body(msg)
             
             emails.append({
                 'id': email_id.decode(),
@@ -110,7 +164,7 @@ def check_unread_emails(limit=10):
                 'from': from_addr,
                 'sender_name': sender_name,
                 'date': date,
-                'body': body[:500] + '...' if len(body) > 500 else body
+                'body': body
             })
         
         mail.close()
@@ -212,7 +266,7 @@ Examples:
                 print(f"From: {e['from']}")
                 print(f"Subject: {e['subject']}")
                 print(f"Date: {e['date']}")
-                print(f"\nPreview:\n{e['body'][:300]}...")
+                print("\nBody:\n" + (e['body'] or "(No text content)"))
                 print()
     
     elif command == 'send':
